@@ -1,183 +1,171 @@
 <template lang="pug">
-.menu.app-container.layout-row.flex
-  el-tree.tree-warp.flex-15(
-    :data="treeData"
-    :props="defaultProps"
-    highlight-current
-    node-key="id"
-    ref='tree'
-    @node-click="handleNodeClick")
-    span.custom-tree-node.layout-row__between.icon-position(slot-scope="{ node, data }")
-        span {{ node.label }}
-        i.el-icon-setting.tree-icon(@click.stop="editTreeNode(data)" )
-  .content.layout-column.flex.flex-85
+.user.app-container(style="display:flex;flex:1")
+  .content(style="width:100%;")
     el-form(
       style="width:60%;"
       :model="filterForm"
       ref="filterForm"
-      inline
-      label-width="80px"
-      label-position="left"
+      :inline="true"
+      label-width="120px"
+      label-position="right"
       )
-      el-form-item(label="权限名称:")
-        el-input.filter-item(
-          placeholder="请输入权限名称"
-          v-model="filterForm.name"
-          style="width: 200px;"
-          clearable
-          @clear="reset")
-        el-button.filter-item(
-          type="primary"
-          icon="el-icon-search"
-          style="margin-left: 10px;"
-          @click="search") 搜索
-
-    simple-table(
-      :listLoading="tableLoading"
-      :columns="columns"
-      :list="tableData"
-      :hasSelection='false'
-      :hasPopover="true"
-      :operation="operation"
-      :operationWidth="operationWidth"
-      :totalCount="totalCount"
-      :listQuery="listQuery"
-      @onGetList="onGetTableList"
-      @onModify="onModify"
-    )
+    .layout-row(style="margin-bottom: 15px")
+      el-button.filter-item(
+        style="margin-left: 10px;"
+        type="primary"
+        icon="el-icon-circle-plus-outline"
+        @click="add") 添加
+      el-button(
+        type="primary"
+        icon="el-icon-delete"
+        style="margin-left: 10px;"
+        @click=""
+        :disabled="deleteDisable") 排序
+    .table-warp
+      simple-table(
+        :listLoading="tableLoading"
+        :columns="columns"
+        :list="tableData"
+        :hasSelection='true'
+        :hasPopover="false"
+        :operation="operation"
+        :operationWidth="operationWidth"
+        :totalCount="totalCount"
+        :listQuery="listQuery"
+        @onGetList="onGetTableList"
+        @onModify="onModify"
+        @onDelete="onDelete"
+        @onSelectionChange="onSelectionChange"
+      )
   modify-dialog(
     :show="showDialog"
     @onClose="showDialog = false"
-    :form="formData"
+    @onConfirm="onConfirm"
+    :formData="formData"
+    :items="formItems"
+    :rules="diaLogformRules"
   )
-  el-dialog(
-    title="编辑"
-    :visible.sync="dialogVisible"
-    width="30%")
-    .dialog-content.layout-row
-      span 菜单名称：
-      el-input(v-model="editTreeData.label" size="small" style="width: 300px;margin-lift:20px;")
-    span.dialog-footer(slot="footer")
-      el-button(@click="dialogVisible = false") 取消
-      el-button(@click="treeSubmit" type="primary") 确定
 </template>
 
 <script>
-import { list, tableList, modifyTree } from '@/api/menu'
-import ModifyDialog from './ModifyDialog'
+import { tableList, deleteUser, modifyUser, addUser } from '@/api/user'
+import ModifyDialog from '@/components/SimpleDialog'
 import SimpleTable from '@/components/Table/SimpleTable'
 export default {
-  name: 'Menu',
+  name: 'User',
   components: {
     SimpleTable,
     ModifyDialog
   },
   data() {
     return {
-      treeData: [],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      },
-      // 被点中的树id
-      types: 1,
-
+      deleteDisable: true,
       tableLoading: false,
       totalCount: 50,
-      // 查询条件
+      // 列表查询参数
       listQuery: {
         page: 1,
         limit: 10,
-        title: undefined
+        name: undefined,
+        management: undefined
       },
       columns: [
         {
-          prop: 'permission',
-          label: '操作',
-          align: 'center',
-          width: 200
-        },
-        {
-          prop: 'permissionId',
-          label: '操作ID',
+          prop: 'stuName',
+          label: '序号',
           align: 'center',
           width: 100
         },
         {
-          prop: 'createdTime',
-          label: '创建时间',
+          prop: 'actDate',
+          label: '名称',
           align: 'center'
         },
         {
-          prop: 'modifyTime',
-          label: '更新时间',
+          prop: 'actSite',
+          label: '密级',
+          align: 'center'
+        },
+        {
+          prop: 'state',
+          label: '图片张数',
+          align: 'center',
+          status: true
+        },
+        {
+          prop: 'actImage',
+          label: '简介',
+          align: 'center'
+        },
+        {
+          prop: 'www',
+          label: '浏览次数',
+          align: 'center'
+        },
+        {
+          prop: 'aceetImage',
+          label: '排序',
           align: 'center'
         }
       ],
       tableData: [],
       operationWidth: '300',
       operation: [
-        { type: 'primary', size: 'mini', icon: 'el-icon-edit', title: '编辑', id: 1, fn: 'onModify' }
+        { type: 'primary', size: 'mini', icon: 'el-icon-edit', title: '编辑', id: 1, fn: 'onModify' },
+        { type: 'danger', size: 'mini', icon: 'el-icon-delete', title: '删除', id: 2, fn: 'onDelete' }
       ],
 
       // 表单
       filterForm: {
-        name: ''
+        actName: ''
       },
 
       // 弹窗
       showDialog: false,
       formData: {
-        permission: '',
-        permissionId: '',
-        createdTime: '',
-        modifyTime: ''
+        actName: '',
+        stuName: '',
+        actDate: '',
+        actSite: '',
+        actImage: '',
+        state: '1'
+      },
+      formItems: [
+        { label: '序号', prop: 'actName', input: true },
+        { label: '名称', prop: 'stuName', input: true },
+        { label: '密级', prop: 'actDate', input: true },
+        { label: '图片张数', prop: 'actSite', input: true },
+        { label: '简介', prop: 'state', input: true },
+        { label: '浏览次数', prop: 'actSite', input: true },
+        { label: '排序', prop: 'actImage', input: true }
+      ],
+      diaLogformRules: {
+        actName: [{ required: true, message: '请输入序号', trigger: 'blur' }],
+        state: [{ required: true, message: '请输入简介', trigger: 'blur' }],
+        stuName: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        actDate: [{ required: true, message: '请输入密级', trigger: 'blur' }],
+        actSite: [{ required: true, message: '请输入图片张数', trigger: 'blur' }],
+        actImage: [{ required: true, message: '请输入数字', trigger: 'blur' }]
       },
 
-      // 树名称修改弹窗
-      editTreeData: {
-        id: '',
-        label: ''
-      },
-      dialogVisible: false
+      // 表格
+      selectIds: [],
+      isModify: false
     }
   },
   created() {
-    this.getTreeList()
+    this.onGetTableList()
   },
   mounted() {
-    this.$nextTick(function() {
-      this.$refs.tree.setCurrentKey(1)
-    })
+
   },
   methods: {
     /**
-     * @description getTreeList 获取树列表
-     */
-    getTreeList() {
-      list().then((res) => {
-        this.treeData = res.data
-        this.types = this.treeData[0].id
-        this.onGetTableList()
-        this.$nextTick(function() {
-          this.$refs.tree.setCurrentKey(1)
-        })
-      })
-    },
-    /**
-     * @description handleNodeClick 被选中的树
-     * @param {Object} [val] (id, lable) 点击的行的数据
-     */
-    handleNodeClick(val) {
-      this.types = val.id
-      this.onGetTableList()
-    },
-    /**
-     * @description onGetTableList 获取表格数据
+     * @description onGetTableList 获取表格列表
      */
     onGetTableList() {
       this.listLoading = true
-      tableList(this.types, this.listQuery).then(res => {
+      tableList(this.listQuery).then(res => {
         this.tableData = res.data.items
         this.totalCount = res.data.total
         setTimeout(() => {
@@ -185,47 +173,122 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    // 搜索
-    search() {
-      this.listQuery.title = this.filterForm.name
-      this.onGetTableList()
-    },
-    // 重置搜索表单
-    reset() {
-      this.listQuery.title = undefined
-      this.onGetTableList()
+    /**
+     * @description onSelectionChange 表格勾选时
+     * @param {Array} [val] 被勾选的数据行
+     */
+    onSelectionChange(val) {
+      val.length > 0 ? this.deleteDisable = false : this.deleteDisable = true
+      this.selectIds = []
+      val.map(user => {
+        this.selectIds.push(user.id)
+      })
     },
     /**
      * @description onModify 编辑行
      * @param {Object} [row] 点击修改按钮的行的数据
      */
     onModify(index, row) {
+      // console.log(row)
+      if (row) {
+        this.isModify = true
+        this.formData = Object.assign(this.formData, row)
+      } else {
+        this.formData = {
+          actName: '',
+          stuName: '',
+          actDate: '',
+          actSite: '',
+          actImage: '',
+          state: '1'
+        }
+      }
+      /* var indexs = this.formItems.findIndex(item => {
+        return item.prop === 'role'
+      })
+      this.formItems[indexs].options = []
+      this.$store.dispatch('GetUserInfo').then((res) => {
+        const roles = res.data.controlRoles
+        roles.map(item => {
+          this.formItems[indexs].options.push({
+            label: item,
+            value: item
+          })
+        }) */
       this.showDialog = true
-      this.formData = row
+      // })
     },
     /**
-     * @description editTreeNode 编辑树节点
-     * @param {Object} [data] (id, label)被点击的树节点的数据
+     * @description onDelete 删除行
+     * @param {Object} [row] 点击删除按钮的行的数据
      */
-    editTreeNode(data) {
-      this.dialogVisible = true
-      this.editTreeData = JSON.parse(JSON.stringify(data))
-    },
-    // 确定修改
-    treeSubmit() {
-      modifyTree(this.editTreeData).then(res => {
-        this.dialogVisible = false
+    onDelete(index, row) {
+      this.$confirm('此操作将永久删除用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let id = []
+        row ? id.push(row.id) : id = this.selectIds
+        deleteUser({ ids: JSON.stringify(id) }).then((res) => {
+          // console.log(res)
+          this.onGetTableList()
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
+    },
+    // 添加
+    add() {
+      this.isModify = false
+      this.onModify()
+    },
+    /**
+     * @description onConfirm 表单提交
+     * @param {Object} [formData] 表单数据
+     */
+    onConfirm(formData) {
+      if (this.isModify) {
+        modifyUser(formData).then(res => {
+          this.$message.success('修改成功')
+          this.onGetTableList()
+          this.showDialog = false
+          this.isModify = false
+        })
+      } else {
+        addUser(formData).then(res => {
+          this.$message.success('添加成功')
+          this.onGetTableList()
+          this.showDialog = false
+          this.isModify = false
+        })
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.menu{
-  .dialog-content{
-    align-items: center;
-    padding-left: 20px;
+.user{
+  .content{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    /deep/ .el-form-item{
+      margin-bottom: 10px
+    }
+    .table-warp{
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
   }
 }
 </style>
