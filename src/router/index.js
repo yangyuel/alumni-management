@@ -187,10 +187,10 @@ export const asyncRouterMap = [
     component: Layout,
     children: [{
       path: 'alumniActivity',
-      name: '个人中心',
+      name: '校友活动',
       component: () => import('@/views/pages/alumniActivity/index'),
       meta: {
-        title: '个人中心',
+        title: '校友活动',
         icon: 'iconfont iconrizhi',
         noCache: true
       }
