@@ -1,121 +1,198 @@
 <template>
-  <div>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="按工作性质分" name="first">
-        <log-pie :option="pieOption" class="pie-height" />
-      </el-tab-pane>
-      <el-tab-pane label="按性别分" name="second">
-        <div id="sex" style="width: 400px;height: 300px;" />
-      </el-tab-pane>
-      <el-tab-pane label="按工作地点分" name="third">
-        <div id="place" style="width: 400px;height: 300px;" />
-      </el-tab-pane>
-    </el-tabs>
+  <div class="echarts">
+    <div class="container">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="按单位性质">
+          <div ref="natureRef" class="nature"/>
+        </el-tab-pane>
+        <el-tab-pane label="按性别">
+          <div ref="genderRef" class="gender"/>
+        </el-tab-pane>
+        <el-tab-pane label="按工作地点">
+          <div ref="placeRef" class="place"/>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
   </div>
 </template>
 
 <script>
-import LogPie from './logPie' // 饼图
+import echarts from 'echarts'
+require('echarts/theme/macarons') // echarts theme
+import { debounce } from '@/utils'
 export default {
-  name: 'AlumniActivity',
-  components: { LogPie },
+  name: '',
   data() {
-    return {
-      /* charts: '',
-      opinion: ['及格人数', '未及格人数'],
-      opinionData: [
-        { value: 12, name: '及格人数', itemStyle: '#1ab394' },
-        { value: 18, name: '未及格人数', itemStyle: '#79d2c0' }
-      ], */
-      pieOption: {
+    return {}
+  },
+  mounted() {
+    this.initEchart()
+  },
+  methods: {
+    initEchart() {
+      var natureDemo = this.$echarts.init(this.$refs.natureRef)
+      var genderDemo = this.$echarts.init(this.$refs.genderRef)
+      var placeDemo = this.$echarts.init(this.$refs.placeRef)
+
+      var natureOption = {
         title: {
-          text: '',
-          subtext: '',
-          x: 'center'
+          text: '按单位性质',
+          left: 'center'
         },
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
-          x: 'center',
-          y: 'top',
+          left: 'center',
+          top: 'bottom',
           data: [
-            'rose1',
-            'rose2',
-            'rose3',
-            'rose4',
-            'rose5',
-            'rose6',
-            'rose7',
-            'rose8'
+            '国企',
+            '私企',
+            '外企'
           ]
         },
-        calculable: true,
+        toolbox: {
+          show: true,
+          feature: {
+            mark: { show: true },
+            dataView: { show: true, readOnly: false },
+            magicType: {
+              show: true,
+              type: ['pie', 'funnel']
+            },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          }
+        },
         series: [
           {
-            name: "面积模式",
-            type: "pie",
-            radius: [30, 110],
-            center: ["50%", "50%"],
-            roseType: "area",
+            name: '按单位性质',
+            type: 'pie',
+            radius: [50, 100],
+            roseType: 'area',
             data: [
-              { value: 10, name: "rose1" },
-              { value: 5, name: "rose2" },
-              { value: 15, name: "rose3" },
-              { value: 25, name: "rose4" },
-              { value: 20, name: "rose5" },
-              { value: 35, name: "rose6" },
-              { value: 30, name: "rose7" },
-              { value: 40, name: "rose8" }
+              { value: 10, name: '国企' },
+              { value: 5, name: '私企' },
+              { value: 15, name: '外企' }
             ]
           }
         ]
       }
-    }
-  },
-  methods: {
-    /* drawPie(id) {
-      this.charts = this.$echarts.init(document.getElementById(id))
-      this.charts.setOption({
+      var genderOption = {
+        title: {
+          text: '按性别',
+          left: 'center'
+        },
         tooltip: {
           trigger: 'item',
-          formatter: '{a}<br/>{b}:{c} ({d}%)'
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
-          bottom: 10,
           left: 'center',
-          data: this.opinion
+          top: 'bottom',
+          data: [
+            '男',
+            '女'
+          ]
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            mark: { show: true },
+            dataView: { show: true, readOnly: false },
+            magicType: {
+              show: true,
+              type: ['pie', 'funnel']
+            },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          }
         },
         series: [
           {
-            name: '状态',
+            name: '按性别',
             type: 'pie',
-            radius: '65%',
-            center: ['50%', '50%'],
-            avoidLabelOverlap: false,
-            itemStyle: {
-              emphasis: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              },
-              color: function(params) {
-                // 自定义颜色
-                var colorList = ['#1ab394', '#79d2c0']
-                return colorList[params.dataIndex]
-              }
-            },
-            data: this.opinionData
+            radius: [50, 100],
+            roseType: 'area',
+            data: [
+              { value: 10, name: '男' },
+              { value: 5, name: '女' }
+            ]
           }
         ]
-      })
-    } */
+      }
+      var placeOption = {
+        title: {
+          text: '按工作地点',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          left: 'center',
+          top: 'bottom',
+          data: [
+            '地点1',
+            '地点2',
+            '地点3',
+            '地点4',
+            '地点5',
+            '地点6',
+            '地点7',
+            '地点8'
+          ]
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            mark: { show: true },
+            dataView: { show: true, readOnly: false },
+            magicType: {
+              show: true,
+              type: ['pie', 'funnel']
+            },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          }
+        },
+        series: [
+          {
+            name: '按地点',
+            type: 'pie',
+            radius: [50, 100],
+            roseType: 'area',
+            data: [
+              { value: 10, name: '地点1' },
+              { value: 5, name: '地点2' },
+              { value: 15, name: '地点3' },
+              { value: 25, name: '地点4' },
+              { value: 20, name: '地点5' },
+              { value: 35, name: '地点6' },
+              { value: 30, name: '地点7' },
+              { value: 40, name: '地点8' }
+            ]
+          }
+        ]
+      }
+
+      natureDemo.setOption(natureOption)
+      genderDemo.setOption(genderOption)
+      placeDemo.setOption(placeOption)
+    }
   }
 }
 </script>
-<style lang="scss" scoped>
-.pie-height {
+<style  scoped>
+.container {
+  width: 100%;
+}
+.nature, .gender, .place{
+  width: 700px;
   height: 400px;
 }
+</style>>
+
 </style>

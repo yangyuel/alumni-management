@@ -82,11 +82,6 @@ export default {
           align: 'center'
         },
         {
-          prop: 'actSite',
-          label: '密级',
-          align: 'center'
-        },
-        {
           prop: 'state',
           label: '图片张数',
           align: 'center',
@@ -95,16 +90,6 @@ export default {
         {
           prop: 'actImage',
           label: '简介',
-          align: 'center'
-        },
-        {
-          prop: 'www',
-          label: '浏览次数',
-          align: 'center'
-        },
-        {
-          prop: 'aceetImage',
-          label: '排序',
           align: 'center'
         }
       ],
@@ -133,19 +118,14 @@ export default {
       formItems: [
         { label: '序号', prop: 'actName', input: true },
         { label: '名称', prop: 'stuName', input: true },
-        { label: '密级', prop: 'actDate', input: true },
         { label: '图片张数', prop: 'actSite', input: true },
-        { label: '简介', prop: 'state', input: true },
-        { label: '浏览次数', prop: 'actSite', input: true },
-        { label: '排序', prop: 'actImage', input: true }
+        { label: '简介', prop: 'state', input: true }
       ],
       diaLogformRules: {
         actName: [{ required: true, message: '请输入序号', trigger: 'blur' }],
-        state: [{ required: true, message: '请输入简介', trigger: 'blur' }],
         stuName: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        actDate: [{ required: true, message: '请输入密级', trigger: 'blur' }],
         actSite: [{ required: true, message: '请输入图片张数', trigger: 'blur' }],
-        actImage: [{ required: true, message: '请输入数字', trigger: 'blur' }]
+        state: [{ required: true, message: '请输入简介', trigger: 'blur' }]
       },
 
       // 表格
@@ -197,10 +177,8 @@ export default {
         this.formData = {
           actName: '',
           stuName: '',
-          actDate: '',
           actSite: '',
-          actImage: '',
-          state: '1'
+          state: ''
         }
       }
       /* var indexs = this.formItems.findIndex(item => {
@@ -223,7 +201,7 @@ export default {
      * @param {Object} [row] 点击删除按钮的行的数据
      */
     onDelete(index, row) {
-      this.$confirm('此操作将永久删除用户, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
