@@ -118,7 +118,7 @@ export default {
           fn: 'onDelete'
         }
       ],
-      //表单
+      // 表单
       filterForm: {
         title: ''
       },
@@ -131,7 +131,7 @@ export default {
       },
       formItems: [
         { label: '标题', prop: 'title', input: true, type: 'text' },
-        { label: '模板',prop: 'module', input: true, type: 'text'},
+        { label: '模板', prop: 'module', input: true, type: 'text' },
         { label: '图片', prop: 'image', input: true, type: 'text' }
       ],
       diaLogformRules: {

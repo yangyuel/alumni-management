@@ -10,5 +10,4 @@ el-container(style="display:flex;flex:1; padding: 100px")
 
 <style lang="scss" scoped>
 
-
 </style>

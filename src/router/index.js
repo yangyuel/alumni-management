@@ -83,14 +83,14 @@ export default new Router({
 
 export const asyncRouterMap = [
   {
-    path: '/home/',
+    path: '/platform/',
     component: Layout,
     children: [{
-      path: 'userManagement',
-      name: '首页',
-      component: () => import('@/views/pages/home/index'),
+      path: 'platform',
+      name: '互动平台',
+      component: () => import('@/views/pages/platform/index'),
       meta: {
-        title: '首页',
+        title: '互动平台',
         icon: 'iconfont iconfaguichaxun' }
     }]
   },
@@ -98,27 +98,27 @@ export const asyncRouterMap = [
     path: '/news/',
     component: Layout,
     children: [{
-      path: 'userManagement',
+      path: 'userBulletin',
       name: '新闻公告',
-      component: () => import('@/views/pages/news/index'),
+      component: () => import('@/views/pages/userBulletin/index'),
       meta: {
         title: '新闻公告',
         icon: 'iconfont iconfaguichaxun' }
     }]
   },
   {
-    path: '/regulations/',
+    path: '/userManagement/',
     component: Layout,
     children: [{
       path: 'userManagement',
       name: '校友管理',
-      component: () => import('@/views/pages/Regulations/index'),
+      component: () => import('@/views/pages/userManagement/index'),
       meta: {
         title: '校友管理',
         icon: 'iconfont iconfaguichaxun' }
     }]
   },
-  {
+  /* {
     path: '/mechanism/',
     redirect: 'noredirect',
     component: Layout,
@@ -132,14 +132,14 @@ export const asyncRouterMap = [
         noCache: true
       }
     }]
-  },
+  }, */
   {
-    path: '/user/',
+    path: '/activity/',
     component: Layout,
     children: [{
-      path: 'userManagement',
+      path: 'activity',
       name: '活动管理',
-      component: () => import('@/views/pages/User/index'),
+      component: () => import('@/views/pages/activity/index'),
       meta: {
         title: '活动管理',
         icon: 'iconfont iconyonghu' }
@@ -149,45 +149,46 @@ export const asyncRouterMap = [
     path: '/alumniInfo/',
     component: Layout,
     children: [{
-      path: 'rolesManagement',
+      path: 'alumniInfo',
       name: '校友统计',
       component: () => import('@/views/pages/alumniInfo/index'),
       meta: {
         title: '校友统计',
         icon: 'iconfont iconjiaose' }
     }]
-  },{
-    path: '/roles/',
+  },
+  {
+    path: '/community/',
     component: Layout,
     children: [{
-      path: 'rolesManagement',
+      path: 'community',
       name: '校友社区',
-      component: () => import('@/views/pages/Roles/index'),
+      component: () => import('@/views/pages/community/index'),
       meta: {
         title: '校友社区',
         icon: 'iconfont iconjiaose' }
     }]
   },
   {
-    path: '/menu/',
+    path: '/album/',
     component: Layout,
     children: [{
-      path: 'permissions',
-      name: '招聘信息',
-      component: () => import('@/views/pages/Menu/index'),
+      path: 'album',
+      name: '校友相册',
+      component: () => import('@/views/pages/album/index'),
       meta: {
-        title: '招聘信息',
+        title: '校友相册',
         icon: 'iconfont iconGroup-' }
     }]
   },
   {
-    path: '/log/',
+    path: '/alumniActivity/',
     redirect: 'noredirect',
     component: Layout,
     children: [{
-      path: 'log',
+      path: 'alumniActivity',
       name: '个人中心',
-      component: () => import('@/views/pages/Logs/index'),
+      component: () => import('@/views/pages/alumniActivity/index'),
       meta: {
         title: '个人中心',
         icon: 'iconfont iconrizhi',
@@ -196,21 +197,21 @@ export const asyncRouterMap = [
     }]
   },
   {
-    path: '/attachment/',
+    path: '/donate/',
     redirect: 'noredirect',
     component: Layout,
     children: [{
-      path: 'attachment',
-      name: '附件管理',
-      component: () => import('@/views/pages/Attachment/index'),
+      path: 'donate',
+      name: '校友捐赠',
+      component: () => import('@/views/pages/donate/index'),
       meta: {
-        title: '附件管理',
+        title: '校友捐赠',
         icon: 'iconfont iconfujianguanli',
         noCache: true
       }
     }]
-  },
-  {
+  }
+  /* {
     path: '/dictionary/',
     redirect: 'noredirect',
     component: Layout,
@@ -265,7 +266,7 @@ export const asyncRouterMap = [
     ]
   },
 
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true } */
 ]
 
 // export const routerMap = {

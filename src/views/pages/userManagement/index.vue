@@ -1,34 +1,46 @@
 <template lang="pug">
-.user.app-container(style="display:flex;flex:1")
+.regulations.app-container(style="display:flex;flex:1")
   .content(style="width:100%;")
     el-form(
-      style="width:60%;"
+      style="width:100%;"
       :model="filterForm"
       ref="filterForm"
       :inline="true"
       label-width="120px"
       label-position="right"
       )
-      el-form-item(label="标题:" prop="actName")
-        el-input.filter-item( placeholder="请输入标题" v-model="filterForm.actName" style="width: 200px; margin-right: 20px")
+      el-form-item(label="姓名:" prop="name")
+        el-input.filter-item(
+            placeholder="请输入姓名"
+            v-model="filterForm.name"
+            @keyup.enter.native="search"
+            clearable
+            )
+      el-form-item(label="学号:" prop="code")
+        el-input.filter-item(
+          v-model="filterForm.code"
+            placeholder="请输入学号"
+            @keyup.enter.native="search"
+            clearable
+            )
       el-form-item
           el-button.filter-item(
             type="primary"
             icon="el-icon-search"
             style="margin-left: 10px;"
-            @click="search") 查询
+            @click="search") 搜索
     .layout-row(style="margin-bottom: 15px")
       el-button.filter-item(
         style="margin-left: 10px;"
         type="primary"
         icon="el-icon-circle-plus-outline"
-        @click="add") 添加活动
+        @click="add") 新增
       el-button(
-        type="primary"
+        type="danger"
         icon="el-icon-delete"
         style="margin-left: 10px;"
         @click="onDelete"
-        :disabled="deleteDisable") 批量更新
+        :disabled="deleteDisable") 批量删除
     .table-warp
       simple-table(
         :listLoading="tableLoading"
@@ -56,11 +68,16 @@
 </template>
 
 <script>
-import { tableList, deleteUser, modifyUser, addUser } from '@/api/user'
+import {
+  getRegulations,
+  deleteRegulations,
+  modifyRegulations,
+  addRegulations
+} from '@/api/regulations'
 import ModifyDialog from '@/components/SimpleDialog'
 import SimpleTable from '@/components/Table/SimpleTable'
 export default {
-  name: 'User',
+  name: 'Regulations',
   components: {
     SimpleTable,
     ModifyDialog
@@ -73,81 +90,108 @@ export default {
       // 列表查询参数
       listQuery: {
         page: 1,
-        limit: 10,
-        name: undefined,
-        management: undefined
+        limit: 20,
+        name: '',
+        code: ''
       },
       columns: [
         {
-          prop: 'actName',
-          label: '标题',
+          prop: 'stuName',
+          label: '姓名',
           align: 'center',
+          fixed: 'fixed',
           width: 200
         },
         {
-          prop: 'stuName',
-          label: '发起人',
-          align: 'center',
-          width: 100
-        },
-        {
-          prop: 'actDate',
-          label: '活动时间',
+          prop: 'stuSex',
+          label: '性别',
           align: 'center'
         },
         {
-          prop: 'actSite',
-          label: '活动地点',
+          prop: 'stuNum',
+          label: '学号',
           align: 'center'
         },
         {
-          prop: 'state',
-          label: '状态',
-          align: 'center',
-          status: true
+          prop: 'phone',
+          label: '联系电话',
+          align: 'center'
         },
         {
-          prop: 'actImage',
-          label: '图片',
+          prop: 'mailbox',
+          label: '邮箱',
           align: 'center'
         }
+        // },
+        // {
+        //   prop: 'phone',
+        //   label: '联系电话',
+        //   align: 'center'
+        // },
+        // {
+        //   prop: 'createdTime',
+        //   label: '创建时间',
+        //   align: 'center'
+        // },
+        // {
+        //   prop: 'modifyTime',
+        //   label: '更新时间',
+        //   align: 'center'
+        // }
       ],
       tableData: [],
       operationWidth: '300',
       operation: [
-        { type: 'primary', size: 'mini', icon: 'el-icon-edit', title: '编辑', id: 1, fn: 'onModify' },
-        { type: 'danger', size: 'mini', icon: 'el-icon-delete', title: '删除', id: 2, fn: 'onDelete' }
+        {
+          type: 'primary',
+          size: 'mini',
+          icon: 'el-icon-edit',
+          title: '编辑',
+          id: 1,
+          fn: 'onModify'
+        },
+        {
+          type: 'danger',
+          size: 'mini',
+          icon: 'el-icon-delete',
+          title: '删除',
+          id: 2,
+          fn: 'onDelete'
+        }
       ],
-
       // 表单
       filterForm: {
-        actName: ''
+        name: '',
+        code: ''
       },
-
       // 弹窗
       showDialog: false,
       formData: {
-        actName: '',
         stuName: '',
-        actDate: '',
-        actSite: '',
-        actImage: '',
-        state: '1'
+        stuSex: '',
+        stuNum: '',
+        phone: '',
+        mailbox: ''
       },
       formItems: [
-        { label: '标题', prop: 'actName', input: true },
-        { label: '发起人', prop: 'stuName', input: true },
-        { label: '时间', prop: 'actDate', input: true },
-        { label: '地点', prop: 'actSite', input: true },
-        { label: '状态', prop: 'state', radio: true, options: [{ label: '已通过', value: '1' }, { value: '2', label: '未通过' }] },
-        { label: '图片', prop: 'actImage', select: true, options: [] },
+        { label: '姓名', prop: 'stuName', input: true, type: 'text' },
+        { label: '性别', prop: 'stuSex', input: true, type: 'text' },
+        { label: '学号', prop: 'stuNum', input: true, type: 'text' },
+        { label: '联系电话', prop: 'phone', input: true, type: 'text' },
+        { label: '邮箱', prop: 'mailbox', input: true, type: 'text' }
       ],
       diaLogformRules: {
-        actName: [{ required: true, message: '请输入标题', trigger: 'blur' }],
-        stuName: [{ required: true, message: '请输入发起人姓名', trigger: 'blur' }],
-        actDate: [{ required: true, message: '请输入时间', trigger: 'blur' }],
-        actSite: [{ required: true, message: '请输入地点', trigger: 'blur' }],
-        actImage: [{ required: true, message: '请上传图片', trigger: 'change' }]
+        stuName: [
+          { required: true, message: '请输入姓名', trigger: 'blur' }
+        ],
+        stuSex: [
+          { required: true, message: '请输入性别', trigger: 'blur' }
+        ],
+        stuNum: [{ required: true, message: '请输入学号', trigger: 'blur' }],
+        phone: [{ required: true, message: '请输入联系电话', trigger: 'blur' }],
+        mailbox: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' }
+        ]
       },
 
       // 表格
@@ -158,28 +202,26 @@ export default {
   created() {
     this.onGetTableList()
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     /**
      * @description onGetTableList 获取表格列表
      */
     onGetTableList() {
-      this.listLoading = true
-      tableList(this.listQuery).then(res => {
+      this.tableLoading = true
+      getRegulations(this.listQuery).then(res => {
         this.tableData = res.data.items
         this.totalCount = res.data.total
         setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
+          this.tableLoading = false
+        }, 0.5 * 1000)
       })
     },
     // 搜索
     search() {
+      // !this.filterForm.keyword && this.$message.error('请输入需要搜索的内容！')
       this.listQuery.name = this.filterForm.name
-      this.listQuery.management = this.filterForm.management
-
+      this.listQuery.code = this.filterForm.code
       this.onGetTableList()
     },
     /**
@@ -187,7 +229,9 @@ export default {
      * @param {Array} [val] 被勾选的数据行
      */
     onSelectionChange(val) {
-      val.length > 0 ? this.deleteDisable = false : this.deleteDisable = true
+      val.length > 0
+        ? (this.deleteDisable = false)
+        : (this.deleteDisable = true)
       this.selectIds = []
       val.map(user => {
         this.selectIds.push(user.id)
@@ -204,28 +248,14 @@ export default {
         this.formData = Object.assign(this.formData, row)
       } else {
         this.formData = {
-          actName: '',
           stuName: '',
-          actDate: '',
-          actSite: '',
-          actImage: '',
-          state: '1'
+          stuSex: '',
+          stuNum: '',
+          phone: '',
+          mailbox: ''
         }
       }
-      /* var indexs = this.formItems.findIndex(item => {
-        return item.prop === 'role'
-      })
-      this.formItems[indexs].options = []
-      this.$store.dispatch('GetUserInfo').then((res) => {
-        const roles = res.data.controlRoles
-        roles.map(item => {
-          this.formItems[indexs].options.push({
-            label: item,
-            value: item
-          })
-        }) */
-        this.showDialog = true
-      // })
+      this.showDialog = true
     },
     /**
      * @description onDelete 删除行
@@ -236,23 +266,25 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        let id = []
-        row ? id.push(row.id) : id = this.selectIds
-        deleteUser({ ids: JSON.stringify(id) }).then((res) => {
-          // console.log(res)
-          this.onGetTableList()
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
+      })
+        .then(() => {
+          let id = []
+          row ? id.push(row.id) : (id = this.selectIds)
+          deleteRegulations({ ids: JSON.stringify(id) }).then(res => {
+            // console.log(res)
+            this.onGetTableList()
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
           })
         })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
         })
-      })
     },
     // 添加
     add() {
@@ -265,14 +297,14 @@ export default {
      */
     onConfirm(formData) {
       if (this.isModify) {
-        modifyUser(formData).then(res => {
+        modifyRegulations(formData).then(res => {
           this.$message.success('修改成功')
           this.onGetTableList()
           this.showDialog = false
           this.isModify = false
         })
       } else {
-        addUser(formData).then(res => {
+        addRegulations(formData).then(res => {
           this.$message.success('添加成功')
           this.onGetTableList()
           this.showDialog = false
@@ -285,15 +317,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user{
-  .content{
+.regulations {
+  .content {
     display: flex;
     flex: 1;
     flex-direction: column;
-    /deep/ .el-form-item{
-      margin-bottom: 10px
+    /deep/ .el-form-item {
+      margin-bottom: 10px;
     }
-    .table-warp{
+    .table-warp {
       display: flex;
       flex: 1;
       flex-direction: column;
