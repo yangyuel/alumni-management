@@ -181,10 +181,10 @@ export const asyncRouterMap = [
         icon: 'iconfont iconGroup-' }
     }]
   },
-  {
+  /* {
     path: '/alumniActivity/',
     redirect: 'noredirect',
-    component: Layout,
+    component: Layout,s
     children: [{
       path: 'alumniActivity',
       name: '校友活动',
@@ -195,7 +195,7 @@ export const asyncRouterMap = [
         noCache: true
       }
     }]
-  },
+  }, */
   {
     path: '/donate/',
     redirect: 'noredirect',
