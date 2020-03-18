@@ -174,10 +174,10 @@ export const asyncRouterMap = [
     component: Layout,
     children: [{
       path: 'album',
-      name: '校友相册',
+      name: '相册',
       component: () => import('@/views/pages/album/index'),
       meta: {
-        title: '校友相册',
+        title: '相册',
         icon: 'iconfont iconGroup-' }
     }]
   },
@@ -210,40 +210,39 @@ export const asyncRouterMap = [
         noCache: true
       }
     }]
-  }
-  /* {
-    path: '/dictionary/',
+  },
+  {
+    path: '/donateInfo/',
     redirect: 'noredirect',
     component: Layout,
     children: [{
-      path: 'dictionary',
-      name: '字典管理',
-      component: () => import('@/views/pages/Dictionary/index'),
+      path: 'donateInfo',
+      name: '捐赠信息',
+      component: () => import('@/views/pages/donateInfo/index'),
       meta: {
-        title: '字典管理',
+        title: '捐赠信息',
         icon: 'iconfont iconzidian',
         noCache: true
       }
-    }
-    ]
+    }]
   },
   {
-    path: '/param/',
+    path: '/userAlbum/',
     redirect: 'noredirect',
     component: Layout,
     children: [{
-      path: 'param',
-      name: '参数管理',
-      component: () => import('@/views/pages/Param/index'),
+      path: 'userAlbum',
+      name: '校友相册',
+      component: () => import('@/views/pages/userAlbum/index'),
       meta: {
-        title: '参数管理',
+        title: '校友相册',
         icon: 'iconfont iconcanshupeizhi',
         noCache: true
       }
     }
     ]
-  },
-  {
+  }
+  /* {
     path: '/chart',
     component: Layout,
     redirect: '/chart/flow',
