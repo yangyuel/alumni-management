@@ -4,7 +4,7 @@ el-row(:gutter="100" style="padding: 100px")
     h2.title 最新动态
     div.myInfo(:data="myInfo")
       el-row
-        img.myimg(:src = "myimg")
+        img.myimg(:src = "myInfo.myimg")
         span(style="vertical-align:middle") {{ myInfo.name }}
       el-row
         h3.title {{myInfo.title}}
@@ -14,7 +14,18 @@ el-row(:gutter="100" style="padding: 100px")
   el-col.right(:span="8")
     el-row
       h3.actTitle 推荐活动
+      ul.activities(:data="activities")
+        li(v-for="(item, i) in activities" :key="i")
+          h4 {{ item.actTitle }}
+          div
+            p {{ item.site }}
+            p {{ item.date }}
     el-row
+      h3.actTitle 新闻公告
+      ul.news(:data="news")
+        li(v-for="(item, i) in news" :key="i")
+          div {{ item.newTitle }}
+          div {{ item.date }}
 </template>
 
 <script>
@@ -46,7 +57,38 @@ export default {
             id: '', src: ''
           }
         ]
-      }
+      },
+      activities: [
+        {
+          actTitle: '国宾大酒店',
+          date: '2020/04/25',
+          site: '学院路国宾大酒店'
+        },
+        {
+          actTitle: '国宾大酒店',
+          date: '2020/04/25',
+          site: '学院路国宾大酒店'
+        },
+        {
+          actTitle: '国宾大酒店',
+          date: '2020/04/25',
+          site: '学院路国宾大酒店'
+        }
+      ],
+      news: [
+        {
+          newTitle: '20周年校庆大典',
+          date: '2020/04/25'
+        },
+        {
+          newTitle: '国宾大酒店',
+          date: '2020/04/25'
+        },
+        {
+          newTitle: '国宾大酒店',
+          date: '2020/04/25'
+        }
+      ]
     }
   }
 }
@@ -76,6 +118,7 @@ export default {
   }
 }
 .right {
+  height: 100%;
   el-row {
     width: 100%;
     height: 46%;
@@ -84,6 +127,24 @@ export default {
   }
   .actTitle {
     border-bottom: 3px solid rgb(209, 40, 68);
+  }
+  .activities {
+    li {
+      margin: 10px 0;
+      height: 60px;
+      div {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+  .news {
+    li {
+      margin: 10px 0;
+      height: 40px;
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }
 </style>
