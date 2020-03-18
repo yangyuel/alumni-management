@@ -30,9 +30,9 @@ export default {
   },
   methods: {
     initEchart() {
-      var natureDemo = this.$echarts.init(this.$refs.natureRef)
-      var genderDemo = this.$echarts.init(this.$refs.genderRef)
-      var placeDemo = this.$echarts.init(this.$refs.placeRef)
+      var natureDemo = this.$ec.init(this.$refs.natureRef)
+      var genderDemo = this.$ec.init(this.$refs.genderRef)
+      var placeDemo = this.$ec.init(this.$refs.placeRef)
 
       var natureOption = {
         title: {

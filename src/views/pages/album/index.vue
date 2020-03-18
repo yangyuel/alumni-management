@@ -15,18 +15,12 @@
         type="primary"
         icon="el-icon-circle-plus-outline"
         @click="add") 添加
-      el-button(
-        type="primary"
-        icon="el-icon-delete"
-        style="margin-left: 10px;"
-        @click=""
-        :disabled="deleteDisable") 排序
     .table-warp
       simple-table(
         :listLoading="tableLoading"
         :columns="columns"
         :list="tableData"
-        :hasSelection='true'
+        :hasSelection='false'
         :hasPopover="false"
         :operation="operation"
         :operationWidth="operationWidth"
