@@ -70,11 +70,6 @@ export default {
           align: 'center'
         },
         {
-          prop: 'actSite',
-          label: '捐赠时间',
-          align: 'center'
-        },
-        {
           prop: 'state',
           label: '捐赠金额',
           align: 'center',
@@ -88,21 +83,6 @@ export default {
         {
           prop: 'www',
           label: '捐赠人院系/单位',
-          align: 'center'
-        },
-        {
-          prop: 'aceetImage',
-          label: '入学年份',
-          align: 'center'
-        },
-        {
-          prop: '33',
-          label: '是否公开',
-          align: 'center'
-        },
-        {
-          prop: 'aceetIdddmage',
-          label: '是否为最新',
           align: 'center'
         }
       ],

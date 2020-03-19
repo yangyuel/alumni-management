@@ -1,7 +1,7 @@
 <template>
   <div class="echarts">
     <div class="container">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tabs v-model="activeName" @tab-click="handleClick" type="border-card">
         <el-tab-pane label="按单位性质">
           <div ref="natureRef" class="nature"/>
         </el-tab-pane>
@@ -188,11 +188,11 @@ export default {
 <style  scoped>
 .container {
   width: 100%;
+  height: 100%;
 }
 .nature, .gender, .place{
   width: 700px;
-  height: 400px;
+  height: 100%;
+  margin: 0 auto;
 }
-</style>>
-
 </style>
