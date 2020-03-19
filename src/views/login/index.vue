@@ -35,26 +35,25 @@
       </el-form-item>
       <!-- 登录 -->
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
-
-      <div class="tips">
+      <!--  <div class="tips">
         <span>{{ $t('login.username') }} : admin</span>
         <span>{{ $t('login.password') }} : admin123</span>
       </div>
       <div class="tips">
         <span style="margin-right:18px;">{{ $t('login.username') }} : editor</span>
         <span>{{ $t('login.password') }} : editor</span>
-      </div>
+      </div> -->
 
       <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>
     </el-form>
 
-    <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
+    <!-- <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
       {{ $t('login.thirdpartyTips') }}
       <br>
       <br>
       <br>
       <social-sign />
-    </el-dialog>
+    </el-dialog> -->
 
   </div>
 </template>
@@ -164,15 +163,15 @@ export default {
   /* 修复input 背景不协调 和光标变色 */
   /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-  $bg:#283443;
+  $bg:#eee;
   $light_gray:#eee;
-  $cursor: #fff;
+  $cursor: #d12844;
 
   @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
     .login-container .el-input input{
       color: $cursor;
       &::first-line {
-        color: $light_gray;
+        color: #d12844;
       }
     }
   }
@@ -209,14 +208,14 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 $bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+$dark_gray:#76c0e7;
+$light_gray:#d12844;
 
 .login-container {
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: $bg;
+  background-color: rgb(243, 224, 221);
   .login-form {
     position: absolute;
     left: 0;
