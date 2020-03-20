@@ -192,7 +192,7 @@ export default {
 }
 .nature, .gender, .place{
   width: 700px;
-  height: 100%;
+  height: 500px;
   margin: 0 auto;
 }
 </style>
