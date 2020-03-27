@@ -120,14 +120,14 @@ export default {
         { label: '标题', prop: 'name', input: true },
         { label: '模块', prop: 'describe', input: true },
         { label: '内容', prop: 'content', input: true },
-        { label: '图片',prop:'img'}
+        { label: '图片', prop: 'img' }
       ],
       diaLogformRules: {
         name: [{ required: true, message: '请输入标题', trigger: 'blur' }],
         describe: [
           { required: true, message: '请输入模块内容', trigger: 'blur' }
         ],
-        content:[{ required: true, message: '请输入内容', trigger: 'blur' }]
+        content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
       },
       // 选中行的ID数组
       selectIds: [],
