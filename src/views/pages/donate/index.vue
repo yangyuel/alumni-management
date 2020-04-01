@@ -84,7 +84,7 @@ export default {
           prop: 'www',
           label: '捐赠人院系/单位',
           align: 'center'
-        }
+        },
       ],
       tableData: [],
       operationWidth: '300',
