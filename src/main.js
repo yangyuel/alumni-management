@@ -22,7 +22,7 @@ Vue.prototype.$day = day
 Vue.prototype.$ec = echarts
 Vue.prototype.$showNotice = showNotice
 // import './permission' // permission control
-import './mock' // simulation data
+// import './mock' // simulation data
 import * as filters from './filters' // global filters
 
 Vue.use(Element, {
