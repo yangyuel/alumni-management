@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { tableList, deleteRoles, modifyRoles, addRoles } from '@/api/roles'
+// import { tableList, deleteRoles, modifyRoles, addRoles } from '@/api/roles'
 import ModifyDialog from '@/components/SimpleDialog'
 import SimpleTable from '@/components/Table/SimpleTable'
 export default {

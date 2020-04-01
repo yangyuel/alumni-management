@@ -21,7 +21,7 @@ import showNotice from './utils/notification'
 Vue.prototype.$day = day
 Vue.prototype.$ec = echarts
 Vue.prototype.$showNotice = showNotice
-import './permission' // permission control
+// import './permission' // permission control
 import './mock' // simulation data
 import * as filters from './filters' // global filters
 
@@ -36,7 +36,7 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
-
+console.log(router)
 new Vue({
   el: '#app',
   router,

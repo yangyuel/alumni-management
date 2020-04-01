@@ -75,12 +75,6 @@ export const constantRouterMap = [
   }
 ]
 
-export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
 export const asyncRouterMap = [
   {
     path: '/platform/',
@@ -286,3 +280,8 @@ export const asyncRouterMap = [
 //     }
 //   }
 // }
+export default new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap.concat(asyncRouterMap)
+})

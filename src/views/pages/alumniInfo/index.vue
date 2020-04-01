@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import echarts from 'echarts'
-require('echarts/theme/macarons') // echarts theme
-import { debounce } from '@/utils'
+import echarts from 'echarts'
+require('echarts/theme/macarons') 
+import { debounce } from '@/utils'
 export default {
   name: '',
   data() {

@@ -68,12 +68,12 @@
 </template>
 
 <script>
-import {
+/* import {
   getRegulations,
   deleteRegulations,
   modifyRegulations,
   addRegulations
-} from '@/api/regulations'
+} from '@/api/regulations' */
 import ModifyDialog from '@/components/SimpleDialog'
 import SimpleTable from '@/components/Table/SimpleTable'
 export default {

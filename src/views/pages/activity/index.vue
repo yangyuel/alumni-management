@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { tableList, deleteUser, modifyUser, addUser } from '@/api/user'
+import { tableList, deleteUser, modifyUser, addUser } from '@/api/activity'
 import ModifyDialog from '@/components/SimpleDialog'
 import SimpleTable from '@/components/Table/SimpleTable'
 export default {
@@ -159,7 +159,7 @@ export default {
     this.onGetTableList()
   },
   mounted() {
-
+    this.onGetTableList()
   },
   methods: {
     /**

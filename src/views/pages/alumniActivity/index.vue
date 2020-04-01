@@ -71,12 +71,11 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/log'
+// import { fetchList } from '@/api/log'
 import Pagination from '@/components/Pagination'
-import LogPie from './logPie' // 饼图
 export default {
   name: 'Log',
-  components: { Pagination, LogPie },
+  components: { Pagination },
   data() {
     return {
       list: [],
