@@ -163,18 +163,18 @@ export const asyncRouterMap = [
         icon: 'iconfont iconjiaose' }
     }]
   },
-  {
-    path: '/album/',
-    component: Layout,
-    children: [{
-      path: 'album',
-      name: '相册',
-      component: () => import('@/views/pages/album/index'),
-      meta: {
-        title: '相册',
-        icon: 'iconfont iconGroup-' }
-    }]
-  },
+  // {
+  //   path: '/album/',
+  //   component: Layout,
+  //   children: [{
+  //     path: 'album',
+  //     name: '相册',
+  //     component: () => import('@/views/pages/album/index'),
+  //     meta: {
+  //       title: '相册',
+  //       icon: 'iconfont iconGroup-' }
+  //   }]
+  // },
   /* {
     path: '/alumniActivity/',
     redirect: 'noredirect',
