@@ -9,32 +9,18 @@
       label-width="120px"
       label-position="right"
       )
-      el-form-item(label="标题:" prop="actName")
-        el-input.filter-item( placeholder="请输入标题" v-model="filterForm.actName" style="width: 200px; margin-right: 20px")
-      el-form-item
-          el-button.filter-item(
-            type="primary"
-            icon="el-icon-search"
-            style="margin-left: 10px;"
-            @click="search") 查询
     .layout-row(style="margin-bottom: 15px")
       el-button.filter-item(
         style="margin-left: 10px;"
         type="primary"
         icon="el-icon-circle-plus-outline"
-        @click="add") 添加活动
-      el-button(
-        type="primary"
-        icon="el-icon-delete"
-        style="margin-left: 10px;"
-        @click="onDelete"
-        :disabled="deleteDisable") 批量更新
+        @click="add") 添加
     .table-warp
       simple-table(
         :listLoading="tableLoading"
         :columns="columns"
         :list="tableData"
-        :hasSelection='true'
+        :hasSelection='false'
         :hasPopover="false"
         :operation="operation"
         :operationWidth="operationWidth"
@@ -56,7 +42,7 @@
 </template>
 
 <script>
-import { tableList, deleteAct, modifyAct, addAct, batchSet } from '@/api/activity'
+import { tableList, deleteUser, modifyUser, addUser } from '@/api/user'
 import ModifyDialog from '@/components/SimpleDialog'
 import SimpleTable from '@/components/Table/SimpleTable'
 export default {
@@ -74,40 +60,30 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        actName: undefined
+        name: undefined,
+        management: undefined
       },
       columns: [
         {
-          prop: 'actName',
-          label: '标题',
-          align: 'center',
-          width: 200
-        },
-        {
           prop: 'stuName',
-          label: '发起人',
+          label: '序号',
           align: 'center',
           width: 100
         },
         {
           prop: 'actDate',
-          label: '活动时间',
-          align: 'center'
-        },
-        {
-          prop: 'actSite',
-          label: '活动地点',
+          label: '名称',
           align: 'center'
         },
         {
           prop: 'state',
-          label: '状态',
+          label: '图片张数',
           align: 'center',
           status: true
         },
         {
           prop: 'actImage',
-          label: '图片',
+          label: '简介',
           align: 'center'
         }
       ],
@@ -134,19 +110,16 @@ export default {
         state: '1'
       },
       formItems: [
-        { label: '标题', prop: 'actName', input: true },
-        { label: '发起人', prop: 'stuName', input: true },
-        { label: '时间', prop: 'actDate', input: true },
-        { label: '地点', prop: 'actSite', input: true },
-        { label: '状态', prop: 'state', radio: true, options: [{ label: '已通过', value: '1' }, { value: '2', label: '未通过' }] },
-        { label: '图片', prop: 'actImage', select: true, options: [] }
+        { label: '序号', prop: 'actName', input: true },
+        { label: '名称', prop: 'stuName', input: true },
+        { label: '图片张数', prop: 'actSite', input: true },
+        { label: '简介', prop: 'state', input: true }
       ],
       diaLogformRules: {
-        actName: [{ required: true, message: '请输入标题', trigger: 'blur' }],
-        stuName: [{ required: true, message: '请输入发起人姓名', trigger: 'blur' }],
-        actDate: [{ required: true, message: '请输入时间', trigger: 'blur' }],
-        actSite: [{ required: true, message: '请输入地点', trigger: 'blur' }],
-        actImage: [{ required: true, message: '请上传图片', trigger: 'change' }]
+        actName: [{ required: true, message: '请输入序号', trigger: 'blur' }],
+        stuName: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        actSite: [{ required: true, message: '请输入图片张数', trigger: 'blur' }],
+        state: [{ required: true, message: '请输入简介', trigger: 'blur' }]
       },
 
       // 表格
@@ -154,9 +127,11 @@ export default {
       isModify: false
     }
   },
-  created() {},
-  mounted() {
+  created() {
     this.onGetTableList()
+  },
+  mounted() {
+
   },
   methods: {
     /**
@@ -165,14 +140,12 @@ export default {
     onGetTableList() {
       this.listLoading = true
       tableList(this.listQuery).then(res => {
-        this.tableData = res.data
-        // this.totalCount = res.data.total
+        this.tableData = res.data.items
+        this.totalCount = res.data.total
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
       })
-    },
-    // 搜索
-    search() {
-      this.listQuery.actName = this.filterForm.actName
-      this.onGetTableList()
     },
     /**
      * @description onSelectionChange 表格勾选时
@@ -198,9 +171,7 @@ export default {
         this.formData = {
           actName: '',
           stuName: '',
-          actDate: '',
           actSite: '',
-          actImage: '',
           state: ''
         }
       }
@@ -224,14 +195,15 @@ export default {
      * @param {Object} [row] 点击删除按钮的行的数据
      */
     onDelete(index, row) {
-      this.$confirm('此操作将永久删除用户, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         let id = []
         row ? id.push(row.id) : id = this.selectIds
-        deleteAct({ ids: JSON.stringify(id) }).then((res) => {
+        deleteUser({ ids: JSON.stringify(id) }).then((res) => {
+          // console.log(res)
           this.onGetTableList()
           this.$message({
             type: 'success',
@@ -256,14 +228,14 @@ export default {
      */
     onConfirm(formData) {
       if (this.isModify) {
-        modifyAct(formData).then(res => {
+        modifyUser(formData).then(res => {
           this.$message.success('修改成功')
           this.onGetTableList()
           this.showDialog = false
           this.isModify = false
         })
       } else {
-        addAct(formData).then(res => {
+        addUser(formData).then(res => {
           this.$message.success('添加成功')
           this.onGetTableList()
           this.showDialog = false

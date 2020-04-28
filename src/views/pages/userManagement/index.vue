@@ -73,7 +73,7 @@
   deleteRegulations,
   modifyRegulations,
   addRegulations
-} from '@/api/regulations' */
+} from '@/api/user' */
 import ModifyDialog from '@/components/SimpleDialog'
 import SimpleTable from '@/components/Table/SimpleTable'
 export default {

@@ -12,7 +12,7 @@ export function deleteUser(id) {
   return request({
     url: '/user/userList',
     method: 'delete',
-    params: id,
+    params: id
   })
 }
 
