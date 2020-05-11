@@ -54,6 +54,10 @@
           el-radio(v-for="list in item.options"
           :key="list.label"
           :label="list.value") {{list.label}}
+        el-upload(v-model="formData[item.prop]" v-if="item.upload"
+          :action="item.action")
+          el-button(size="small" type="primary") 点击上传
+          div 只能上传jpg/png文件，且不超过500kb
         .dialog-tree-warp
           el-tree(
             v-if="item.tree"

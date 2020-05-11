@@ -8,7 +8,7 @@ export function loginByUsername(username, password) {
   }
   return request({
     data,
-    url: '/login/login',
+    url: '/login/user/login',
     method: 'post'
   })
 }

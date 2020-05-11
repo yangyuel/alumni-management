@@ -1,37 +1,37 @@
 import request from '@/utils/request'
 
 /**
- *活动管理列表获取
+ *列表获取
  */
 export const tableList = (data) => {
   return request({
     data,
-    url: '/donate/query',
+    url: '/news/query',
     method: 'get'
   })
 }
 /**
- * 添加活动
+ *添加公告
  */
-export const addAct = (data) => {
+export const addNews = (data) => {
   return request({
     data,
-    url: '/activity/activity/add',
+    url: '/news/News/creation',
     method: 'post'
   })
 }
 /**
- * 删除活动
+ *删除公告
  */
-export const deleteAct = (data) => {
+export const deleteNews = (data) => {
   return request({
     data,
-    url: '/activity/deleteAll',
-    method: 'post'
+    url: '',
+    method: ''
   })
 }
 /**
- * 活动更新
+ * 编辑公告
  */
 export const modifyAct = (data) => {
   return request({

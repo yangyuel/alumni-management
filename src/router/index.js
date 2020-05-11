@@ -41,6 +41,10 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '',
+    redirect: '/login'
+  },
+  {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
@@ -63,7 +67,7 @@ export const constantRouterMap = [
   {
     path: '',
     component: Layout,
-    redirect: 'dashboard',
+    // redirect: 'dashboard',
     children: [
       {
         path: 'dashboard',
@@ -77,7 +81,7 @@ export const constantRouterMap = [
 
 export const asyncRouterMap = [
   {
-    path: '/platform/',
+    path: '',
     component: Layout,
     children: [{
       path: 'platform',
@@ -89,7 +93,7 @@ export const asyncRouterMap = [
     }]
   },
   {
-    path: '/news/',
+    path: '',
     component: Layout,
     children: [{
       path: 'userBulletin',
@@ -101,7 +105,7 @@ export const asyncRouterMap = [
     }]
   },
   {
-    path: '/userManagement/',
+    path: '',
     component: Layout,
     children: [{
       path: 'userManagement',
@@ -112,23 +116,8 @@ export const asyncRouterMap = [
         icon: 'iconfont iconfaguichaxun' }
     }]
   },
-  /* {
-    path: '/mechanism/',
-    redirect: 'noredirect',
-    component: Layout,
-    children: [{
-      path: 'mechanism',
-      name: '新闻公告',
-      component: () => import('@/views/pages/mechanism/index'),
-      meta: {
-        title: '新闻公告',
-        icon: 'iconfont iconjigou',
-        noCache: true
-      }
-    }]
-  }, */
   {
-    path: '/activity/',
+    path: '',
     component: Layout,
     children: [{
       path: 'activity',
@@ -140,7 +129,7 @@ export const asyncRouterMap = [
     }]
   },
   {
-    path: '/alumniInfo/',
+    path: '',
     component: Layout,
     children: [{
       path: 'alumniInfo',
@@ -152,7 +141,7 @@ export const asyncRouterMap = [
     }]
   },
   {
-    path: '/community/',
+    path: '',
     component: Layout,
     children: [{
       path: 'community',
@@ -163,22 +152,22 @@ export const asyncRouterMap = [
         icon: 'iconfont iconjiaose' }
     }]
   },
-  // {
-  //   path: '/album/',
-  //   component: Layout,
-  //   children: [{
-  //     path: 'album',
-  //     name: '相册',
-  //     component: () => import('@/views/pages/album/index'),
-  //     meta: {
-  //       title: '相册',
-  //       icon: 'iconfont iconGroup-' }
-  //   }]
-  // },
-  /* {
-    path: '/alumniActivity/',
+  {
+    path: '',
+    component: Layout,
+    children: [{
+      path: 'album',
+      name: '相册',
+      component: () => import('@/views/pages/album/index'),
+      meta: {
+        title: '相册',
+        icon: 'iconfont iconGroup-' }
+    }]
+  },
+  {
+    path: '',
     redirect: 'noredirect',
-    component: Layout,s
+    component: Layout,
     children: [{
       path: 'alumniActivity',
       name: '校友活动',
@@ -189,9 +178,9 @@ export const asyncRouterMap = [
         noCache: true
       }
     }]
-  }, */
+  },
   {
-    path: '/donate/',
+    path: '',
     redirect: 'noredirect',
     component: Layout,
     children: [{
@@ -206,7 +195,7 @@ export const asyncRouterMap = [
     }]
   },
   {
-    path: '/donateInfo/',
+    path: '',
     redirect: 'noredirect',
     component: Layout,
     children: [{
@@ -221,7 +210,7 @@ export const asyncRouterMap = [
     }]
   },
   {
-    path: '/userAlbum/',
+    path: '',
     redirect: 'noredirect',
     component: Layout,
     children: [{

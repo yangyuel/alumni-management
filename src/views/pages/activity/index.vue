@@ -9,8 +9,8 @@
       label-width="120px"
       label-position="right"
       )
-      el-form-item(label="标题:" prop="actName")
-        el-input.filter-item( placeholder="请输入标题" v-model="filterForm.actName" style="width: 200px; margin-right: 20px")
+      el-form-item(label="标题:" prop="actname")
+        el-input.filter-item( placeholder="请输入标题" v-model="filterForm.actname" style="width: 200px; margin-right: 20px")
       el-form-item
           el-button.filter-item(
             type="primary"
@@ -74,28 +74,28 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        actName: undefined
+        actname: undefined
       },
       columns: [
         {
-          prop: 'actName',
+          prop: 'actname',
           label: '标题',
           align: 'center',
           width: 200
         },
         {
-          prop: 'stuName',
+          prop: 'stuname',
           label: '发起人',
           align: 'center',
           width: 100
         },
         {
-          prop: 'actDate',
+          prop: 'actdate',
           label: '活动时间',
           align: 'center'
         },
         {
-          prop: 'actSite',
+          prop: 'actsite',
           label: '活动地点',
           align: 'center'
         },
@@ -106,7 +106,7 @@ export default {
           status: true
         },
         {
-          prop: 'actImage',
+          prop: 'actimage',
           label: '图片',
           align: 'center'
         }
@@ -120,33 +120,33 @@ export default {
 
       // 表单
       filterForm: {
-        actName: ''
+        actname: ''
       },
 
       // 弹窗
       showDialog: false,
       formData: {
-        actName: '',
-        stuName: '',
-        actDate: '',
-        actSite: '',
-        actImage: '',
+        actname: '',
+        stuname: '',
+        actdate: '',
+        actsite: '',
+        actimage: '',
         state: '1'
       },
       formItems: [
-        { label: '标题', prop: 'actName', input: true },
-        { label: '发起人', prop: 'stuName', input: true },
-        { label: '时间', prop: 'actDate', input: true },
-        { label: '地点', prop: 'actSite', input: true },
-        { label: '状态', prop: 'state', radio: true, options: [{ label: '已通过', value: '1' }, { value: '2', label: '未通过' }] },
-        { label: '图片', prop: 'actImage', select: true, options: [] }
+        { label: '标题', prop: 'actname', input: true },
+        { label: '发起人', prop: 'stuname', input: true },
+        { label: '时间', prop: 'actdate', time: true },
+        { label: '地点', prop: 'actsite', input: true },
+        { label: '状态', prop: 'state', radio: true, options: [{ label: '已通过', value: '1' }, { value: '0', label: '未通过' }] },
+        { label: '图片', prop: 'actimage', upload: true, action: 'action="https://jsonplaceholder.typicode.com/posts/' }
       ],
       diaLogformRules: {
-        actName: [{ required: true, message: '请输入标题', trigger: 'blur' }],
-        stuName: [{ required: true, message: '请输入发起人姓名', trigger: 'blur' }],
-        actDate: [{ required: true, message: '请输入时间', trigger: 'blur' }],
-        actSite: [{ required: true, message: '请输入地点', trigger: 'blur' }],
-        actImage: [{ required: true, message: '请上传图片', trigger: 'change' }]
+        actname: [{ required: true, message: '请输入标题', trigger: 'blur' }],
+        stuname: [{ required: true, message: '请输入发起人姓名', trigger: 'blur' }],
+        actdate: [{ required: true, message: '请输入时间', trigger: 'blur' }],
+        actsite: [{ required: true, message: '请输入地点', trigger: 'blur' }],
+        actimage: [{ required: false, message: '请上传图片', trigger: 'change' }]
       },
 
       // 表格
@@ -165,13 +165,13 @@ export default {
     onGetTableList() {
       this.listLoading = true
       tableList(this.listQuery).then(res => {
-        this.tableData = res.data
-        // this.totalCount = res.data.total
+        this.tableData = res.data.data.records
+        this.totalCount = res.data.total
       })
     },
     // 搜索
     search() {
-      this.listQuery.actName = this.filterForm.actName
+      this.listQuery.actname = this.filterForm.actname
       this.onGetTableList()
     },
     /**
@@ -196,11 +196,11 @@ export default {
         this.formData = Object.assign(this.formData, row)
       } else {
         this.formData = {
-          actName: '',
-          stuName: '',
-          actDate: '',
-          actSite: '',
-          actImage: '',
+          actname: '',
+          stuname: '',
+          actdate: '',
+          actsite: '',
+          actimage: '',
           state: ''
         }
       }
@@ -231,12 +231,15 @@ export default {
       }).then(() => {
         let id = []
         row ? id.push(row.id) : id = this.selectIds
-        deleteAct({ ids: JSON.stringify(id) }).then((res) => {
-          this.onGetTableList()
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
+        deleteAct({ ids: id }).then((res) => {
+          debugger
+          if (res.data.code === 0) {
+            this.onGetTableList()
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          }
         })
       }).catch(() => {
         this.$message({
@@ -257,17 +260,21 @@ export default {
     onConfirm(formData) {
       if (this.isModify) {
         modifyAct(formData).then(res => {
-          this.$message.success('修改成功')
-          this.onGetTableList()
-          this.showDialog = false
-          this.isModify = false
+          if (res.data.code === 0) {
+            this.$message.success(res.data.message)
+            this.onGetTableList()
+            this.showDialog = false
+            this.isModify = false
+          }
         })
       } else {
         addAct(formData).then(res => {
-          this.$message.success('添加成功')
-          this.onGetTableList()
-          this.showDialog = false
-          this.isModify = false
+          if (res.data.code === 0) {
+            this.$message.success(res.data.message)
+            this.onGetTableList()
+            this.showDialog = false
+            this.isModify = false
+          }
         })
       }
     }

@@ -36,7 +36,7 @@
 </template>
 
 <script>
-// import { tableList, deleteUser, modifyUser, addUser } from '@/api/user'
+import { tableList } from '@/api/donate'
 import ModifyDialog from '@/components/SimpleDialog'
 import SimpleTable from '@/components/Table/SimpleTable'
 export default {

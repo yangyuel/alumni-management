@@ -42,7 +42,7 @@
       <!-- 登录 -->
       <el-form-item>
         <el-button type="warning" style="width:40%;margin-right:16%;" @click="register">注册</el-button>
-        <el-button type="success" style="width:40%;" @click="loginIn">登录</el-button>
+        <el-button type="success" style="width:40%;" @click="handleLogin">登录</el-button>
       </el-form-item>
       <el-dialog
         :append-to-body="true"
@@ -128,7 +128,6 @@ export default {
       },
       passwordType: 'password',
       loading: false,
-      showDialog: false,
       redirect: undefined,
       createDialog: false,
       registerInfo: {
@@ -157,12 +156,8 @@ export default {
       immediate: true
     }
   },
-  created() {
-    // window.addEventListener('hashchange', this.afterQRScan)
-  },
-  destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
-  },
+  created() {},
+  destroyed() {},
   mounted() {
     // 请求通知权限
     if (Notification.permission === 'default') {
@@ -194,24 +189,22 @@ export default {
         }
       })
     },
-    afterQRScan() {
-      // const hash = window.location.hash.slice(1)
-      // const hashObj = getQueryObject(hash)
-      // const originUrl = window.location.origin
-      // history.replaceState({}, '', originUrl)
-      // const codeMap = {
-      //   wechat: 'code',
-      //   tencent: 'code'
-      // }
-      // const codeName = hashObj[codeMap[this.auth_type]]
-      // if (!codeName) {
-      //   alert('第三方登录失败')
-      // } else {
-      //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-      //     this.$router.push({ path: '/' })
-      //   })
-      // }
+    register() {
+      this.createDialog = true
+    },
+    compontentCancel() {
+      this.$refs['registerInfo'].resetFields()
+      this.registerInfo = {
+        account: '',
+        password: '',
+        userName: '',
+        userCode: '',
+        userGrade: '',
+        userEmail: ''
+      }
+      this.createDialog = false
     }
+
   }
 }
 </script>
