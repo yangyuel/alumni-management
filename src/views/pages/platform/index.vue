@@ -16,10 +16,10 @@ el-row(:gutter="100" style="padding: 100px")
       h3.actTitle 推荐活动
       ul.activities(:data="activities")
         li(v-for="(item, i) in activities" :key="i")
-          h4 {{ item.actTitle }}
+          h4 {{ item.actname }}
           div
-            p {{ item.site }}
-            p {{ item.date }}
+            p {{ item.actsite }}
+            p {{ item.actdate }}
     el-row
       h3.actTitle 新闻公告
       ul.news(:data="news")
@@ -29,6 +29,7 @@ el-row(:gutter="100" style="padding: 100px")
 </template>
 
 <script>
+import { getCommunity, getNews, getActivity } from '@/api/platform'
 export default {
   name: 'Platform',
   props: {
@@ -58,23 +59,7 @@ export default {
           }
         ]
       },
-      activities: [
-        {
-          actTitle: '国宾大酒店',
-          date: '2020/04/25',
-          site: '学院路国宾大酒店'
-        },
-        {
-          actTitle: '国宾大酒店',
-          date: '2020/04/25',
-          site: '学院路国宾大酒店'
-        },
-        {
-          actTitle: '国宾大酒店',
-          date: '2020/04/25',
-          site: '学院路国宾大酒店'
-        }
-      ],
+      activities: [],
       news: [
         {
           newTitle: '20周年校庆大典',
@@ -91,8 +76,28 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.community()
+    this.newsTable()
+    this.activity()
+  },
   methods: {
-    
+    community() {
+      getCommunity().then(res=> {
+
+      })
+    },
+    newsTable() {
+      getNews().then(res => {
+        this.news = res.data
+      })
+    },
+    activity() {
+      getActivity().then(res => {
+        this.activities = res.data.data
+        console.log(this.activities)
+      })
+    }
   }
 }
 </script>

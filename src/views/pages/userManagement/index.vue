@@ -1,5 +1,5 @@
 <template lang="pug">
-.regulations.app-container(style="display:flex;flex:1")
+.Users.app-container(style="display:flex;flex:1")
   .content(style="width:100%;")
     el-form(
       style="width:100%;"
@@ -68,16 +68,16 @@
 </template>
 
 <script>
-/* import {
-  getRegulations,
-  deleteRegulations,
-  modifyRegulations,
-  addRegulations
-} from '@/api/user' */
+import {
+  tableList,
+  deleteUser,
+  modifyUser,
+  addUser
+} from '@/api/user'
 import ModifyDialog from '@/components/SimpleDialog'
 import SimpleTable from '@/components/Table/SimpleTable'
 export default {
-  name: 'Regulations',
+  name: 'Users',
   components: {
     SimpleTable,
     ModifyDialog
@@ -208,8 +208,8 @@ export default {
      * @description onGetTableList 获取表格列表
      */
     onGetTableList() {
-      this.tableLoading = true
-      getRegulations(this.listQuery).then(res => {
+      // this.tableLoading = true
+      tableList(this.listQuery).then(res => {
         this.tableData = res.data.items
         this.totalCount = res.data.total
         setTimeout(() => {
@@ -270,7 +270,7 @@ export default {
         .then(() => {
           let id = []
           row ? id.push(row.id) : (id = this.selectIds)
-          deleteRegulations({ ids: JSON.stringify(id) }).then(res => {
+          deleteUser({ ids: JSON.stringify(id) }).then(res => {
             // console.log(res)
             this.onGetTableList()
             this.$message({
@@ -297,14 +297,14 @@ export default {
      */
     onConfirm(formData) {
       if (this.isModify) {
-        modifyRegulations(formData).then(res => {
+        modifyUser(formData).then(res => {
           this.$message.success('修改成功')
           this.onGetTableList()
           this.showDialog = false
           this.isModify = false
         })
       } else {
-        addRegulations(formData).then(res => {
+        addUser(formData).then(res => {
           this.$message.success('添加成功')
           this.onGetTableList()
           this.showDialog = false
@@ -317,7 +317,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.regulations {
+.Users {
   .content {
     display: flex;
     flex: 1;
