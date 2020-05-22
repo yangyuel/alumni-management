@@ -31,3 +31,10 @@ export function addUser(data) {
     data
   })
 }
+export function login(params) {
+  return request({
+    url: '/login/user/login',
+    method: 'post',
+    params
+  })
+}

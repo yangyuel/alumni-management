@@ -11,7 +11,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
        '/api':{
-        target:"http://localhost:8888",     //后台地址
+        target:"http://192.168.101.118:8888",     //后台地址
         changeOrigin:true,                              //跨域代理
         pathRewrite: {
            '^/api':""                                         //路径重写

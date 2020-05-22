@@ -8,18 +8,28 @@
       auto-complete="on"
       label-position="left"
     >
+      <div><img src="./pzhu.gif" alt=""></div>
       <div class="title-container">
         <h3 class="title">{{ $t('login.title') }}</h3>
       </div>
-
-      <el-form-item prop="username">
+      <el-form-item label="选择身份：">
+        <el-select v-model="loginForm.role" placeholder="请选择身份..." size="small">
+          <el-option
+            v-for="item in roles"
+            :key="item.role"
+            :label="item.roleName"
+            :value="item.roleName"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item prop="stuName">
         <span class="svg-container">
           <i class="iconfont iconuser" />
         </span>
         <el-input
-          v-model="loginForm.username"
+          v-model="loginForm.stuName"
           placeholder="请输入账号"
-          name="username"
+          name="stuName"
           type="text"
           auto-complete="on"
         />
@@ -93,6 +103,7 @@
 
 <script>
 // import { isvalidUsername } from '@/utils/validate'
+import { login } from '@/api/user'
 import SocialSign from './socialsignin'
 
 export default {
@@ -107,7 +118,7 @@ export default {
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
+      if (value.length < 3) {
         callback(new Error('密码不能小于6位数'))
       } else {
         callback()
@@ -115,11 +126,12 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: 'admin123'
+        stuName: '',
+        password: '',
+        // role: "管理员"
       },
       loginRules: {
-        username: [
+        stuName: [
           { required: true, trigger: 'blur', validator: validateUsername }
         ],
         password: [
@@ -145,7 +157,17 @@ export default {
         userCode: [{ required: true, trigger: 'blur' }],
         userGrade: [{ required: true, trigger: 'blur' }],
         userEmail: [{ required: true, trigger: 'blur' }]
-      }
+      },
+       roles: [
+        {
+          role: "1",
+          roleName: "管理员",
+        },
+        {
+          role: "2",
+          roleName: "学生"
+        }
+      ]
     }
   },
   watch: {
@@ -169,7 +191,22 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store
+          // this.$store
+          //   .dispatch('LoginByUsername', this.loginForm)
+          //   .then(res => {
+          //     if (!res) {
+          //       this.loading = false
+          //       this.$message.error('账号或者密码错误')
+          //     } else {
+          //       this.loading = false
+          //       this.$router.push({ path: this.redirect || '/' })
+          //     }
+          //   })
+          //   .catch(() => {
+          //     this.loading = false
+          //   })
+          login(this.loginForm).then(res => {
+            this.$store
             .dispatch('LoginByUsername', this.loginForm)
             .then(res => {
               if (!res) {
@@ -183,6 +220,8 @@ export default {
             .catch(() => {
               this.loading = false
             })
+          }
+          )
         } else {
           console.log('error submit!!')
           return false
@@ -215,13 +254,13 @@ export default {
 
 $bg: #eee;
 $light_gray: #eee;
-$cursor: #d12844;
+$cursor: #432bce;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
     color: $cursor;
     &::first-line {
-      color: #d12844;
+      color: #432bce;
     }
   }
 }
@@ -259,13 +298,16 @@ $cursor: #d12844;
 <style rel="stylesheet/scss" lang="scss" scoped>
 $bg: #2d3a4b;
 $dark_gray: #76c0e7;
-$light_gray: #d12844;
+$light_gray: #432bce;
 
 .login-container {
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: rgb(243, 224, 221);
+  //background-color: rgb(243, 224, 221);
+  background: url(./bg1.jpg) no-repeat;
+  background-size:100% 100%; 
+  background-attachment:fixed;
   .login-form {
     position: absolute;
     left: 0;
@@ -273,7 +315,8 @@ $light_gray: #d12844;
     width: 520px;
     max-width: 100%;
     padding: 35px 35px 15px 35px;
-    margin: 120px auto;
+    margin: 200px auto;
+    background-color: rgba(255,255,255,.6)
   }
   .tips {
     font-size: 14px;
