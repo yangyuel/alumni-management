@@ -46,13 +46,14 @@ const user = {
   actions: {
     // 用户名登录
     LoginByUsername({ commit }, userInfo) {
-      const username = userInfo.username.trim()
+      // const stuName = userInfo.stuName.trim()
       return new Promise((resolve, reject) => {
-        loginByUsername(username, userInfo.password).then(response => {
+        loginByUsername(userInfo).then(response => {
           const data = response.data
           if (data) {
-            commit('SET_TOKEN', data.token)
-            setToken(response.data.token)
+            commit('SET_TOKEN', data.data.token)
+            setToken(response.data.data.token)
+            localStorage.setItem('token', data.data.token)
             resolve(true)
           } else {
             resolve(false)
@@ -71,7 +72,6 @@ const user = {
             reject('error')
           }
           const data = response.data
-
           if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.roles)
           } else {

@@ -19,7 +19,7 @@
             :key="item.role"
             :label="item.roleName"
             :value="item.roleName"
-          ></el-option>
+          />
         </el-select>
       </el-form-item>
       <el-form-item prop="stuName">
@@ -103,7 +103,7 @@
 
 <script>
 // import { isvalidUsername } from '@/utils/validate'
-import { login } from '@/api/user'
+import { loginByUsername } from '@/api/login'
 import SocialSign from './socialsignin'
 
 export default {
@@ -127,7 +127,7 @@ export default {
     return {
       loginForm: {
         stuName: '',
-        password: '',
+        password: ''
         // role: "管理员"
       },
       loginRules: {
@@ -158,14 +158,14 @@ export default {
         userGrade: [{ required: true, trigger: 'blur' }],
         userEmail: [{ required: true, trigger: 'blur' }]
       },
-       roles: [
+      roles: [
         {
-          role: "1",
-          roleName: "管理员",
+          role: '1',
+          roleName: '管理员'
         },
         {
-          role: "2",
-          roleName: "学生"
+          role: '2',
+          roleName: '学生'
         }
       ]
     }
@@ -191,7 +191,28 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          // this.$store
+          this.$store
+            .dispatch('LoginByUsername', this.loginForm)
+            .then(res => {
+              if (!res) {
+                this.loading = false
+                this.$message.error('账号或者密码错误')
+              } else {
+                this.loading = false
+                // loginByUsername(this.loginForm).then(res => {
+                //   debugger
+                //   this.$store.dispatch("generateRoutes", res.data.data.role);
+                // })
+
+                this.$router.push({ path: '/dashboard' || '/' })
+              }
+            })
+            .catch(() => {
+              this.loading = false
+            })
+          // login(this.loginForm).then(response => {
+          //   debugger
+          //   this.$store
           //   .dispatch('LoginByUsername', this.loginForm)
           //   .then(res => {
           //     if (!res) {
@@ -205,23 +226,7 @@ export default {
           //   .catch(() => {
           //     this.loading = false
           //   })
-          login(this.loginForm).then(res => {
-            this.$store
-            .dispatch('LoginByUsername', this.loginForm)
-            .then(res => {
-              if (!res) {
-                this.loading = false
-                this.$message.error('账号或者密码错误')
-              } else {
-                this.loading = false
-                this.$router.push({ path: this.redirect || '/' })
-              }
-            })
-            .catch(() => {
-              this.loading = false
-            })
-          }
-          )
+          // })
         } else {
           console.log('error submit!!')
           return false
@@ -306,7 +311,7 @@ $light_gray: #432bce;
   width: 100%;
   //background-color: rgb(243, 224, 221);
   background: url(./bg1.jpg) no-repeat;
-  background-size:100% 100%; 
+  background-size:100% 100%;
   background-attachment:fixed;
   .login-form {
     position: absolute;
@@ -315,7 +320,7 @@ $light_gray: #432bce;
     width: 520px;
     max-width: 100%;
     padding: 35px 35px 15px 35px;
-    margin: 200px auto;
+    margin: 120px auto;
     background-color: rgba(255,255,255,.6)
   }
   .tips {

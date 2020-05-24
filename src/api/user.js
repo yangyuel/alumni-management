@@ -2,17 +2,17 @@ import request from '@/utils/request'
 
 export function tableList(listQuery) {
   return request({
-    url: '/user/userList',
+    url: '/user/schoolmate/query',
     method: 'get',
     params: listQuery
   })
 }
 
-export function deleteUser(id) {
+export function deleteUser(params) {
   return request({
-    url: '/user/userList',
-    method: 'delete',
-    params: id
+    url: '/user/schoolmate/deleteAll',
+    method: 'get',
+    params
   })
 }
 

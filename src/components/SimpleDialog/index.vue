@@ -55,7 +55,7 @@
           :key="list.label"
           :label="list.value") {{list.label}}
         el-upload(v-model="formData[item.prop]" v-if="item.upload"
-          :action="item.action")
+          :action="item.action" :headers="token" :on-success="success")
           el-button(size="small" type="primary") 点击上传
           div 只能上传jpg/png文件，且不超过500kb
         .dialog-tree-warp
@@ -126,6 +126,13 @@ export default {
 
     }
   },
+  computed: {
+    token() {
+      return {
+        token: localStorage.getItem('token')
+      }
+    }
+  },
   mounted() {
     // console.log(this.formData)
   },
@@ -157,6 +164,10 @@ export default {
     },
     change() {
       this.$forceUpdate()
+    },
+    success(res) {
+      console.log(res)
+      this.formData.photo = res.data
     }
   }
 }

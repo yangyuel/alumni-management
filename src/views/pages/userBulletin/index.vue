@@ -69,13 +69,18 @@ export default {
           width: 200
         },
         {
-          prop: 'describe',
+          prop: 'title',
           label: '标题',
           align: 'center'
         },
         {
-          prop: 'createdTime',
+          prop: 'photo',
           label: '图片',
+          align: 'center'
+        },
+        {
+          prop: 'ctime',
+          label: '时间',
           align: 'center'
         }
       ],
@@ -119,16 +124,15 @@ export default {
       // 弹窗表单配置项
       formItems: [
         { label: '标题', prop: 'name', input: true },
-        { label: '模块', prop: 'describe', input: true },
-        { label: '内容', prop: 'content', input: true },
-        { label: '图片', prop: 'img', upload: true }
+        { label: '模块', prop: 'title', input: true },
+        { label: '图片', prop: 'photo', upload: true, action: '/common/fileUpload' }
       ],
       diaLogformRules: {
-        name: [{ required: true, message: '请输入标题', trigger: 'blur' }],
-        describe: [
+        title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
+        name: [
           { required: true, message: '请输入模块内容', trigger: 'blur' }
         ],
-        content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
+        photo: [{ required: false }]
       },
       // 选中行的ID数组
       selectIds: [],
@@ -195,9 +199,8 @@ export default {
       } else {
         this.formData = {
           name: '',
-          describe: '',
-          content: '',
-          img: ''
+          title: '',
+          photo: ''
         }
       }
       this.showDialog = true

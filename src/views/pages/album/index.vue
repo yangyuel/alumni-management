@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { tableList, deleteUser, modifyUser, addUser } from '@/api/user'
+import { tableList, addPhoto, downloadPhoto } from '@/api/photo'
 import ModifyDialog from '@/components/SimpleDialog'
 import SimpleTable from '@/components/Table/SimpleTable'
 export default {
@@ -65,25 +65,13 @@ export default {
       },
       columns: [
         {
-          prop: 'stuName',
-          label: '序号',
-          align: 'center',
-          width: 100
-        },
-        {
-          prop: 'actDate',
-          label: '名称',
+          prop: 'module',
+          label: '模块',
           align: 'center'
         },
         {
-          prop: 'state',
-          label: '图片张数',
-          align: 'center',
-          status: true
-        },
-        {
-          prop: 'actImage',
-          label: '简介',
+          prop: 'photo',
+          label: '图片',
           align: 'center'
         }
       ],
@@ -94,32 +82,21 @@ export default {
         { type: 'danger', size: 'mini', icon: 'el-icon-delete', title: '删除', id: 2, fn: 'onDelete' }
       ],
 
-      // 表单
-      filterForm: {
-        actName: ''
-      },
-
       // 弹窗
       showDialog: false,
       formData: {
-        actName: '',
-        stuName: '',
-        actDate: '',
-        actSite: '',
-        actImage: '',
-        state: '1'
+        module: '',
+        photo: ''
       },
       formItems: [
-        { label: '序号', prop: 'actName', input: true },
-        { label: '名称', prop: 'stuName', input: true },
-        { label: '图片张数', prop: 'actSite', input: true },
-        { label: '简介', prop: 'state', input: true }
+        { label: '模块', prop: 'module', input: true },
+        { label: '图片', prop: 'photo', upload: true, action: '/common/fileUpload', success: function() {
+
+        } }
       ],
       diaLogformRules: {
-        actName: [{ required: true, message: '请输入序号', trigger: 'blur' }],
-        stuName: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        actSite: [{ required: true, message: '请输入图片张数', trigger: 'blur' }],
-        state: [{ required: true, message: '请输入简介', trigger: 'blur' }]
+        module: [{ required: true, message: '请输入序号', trigger: 'blur' }],
+        photo: [{ required: false, message: '请输入名称', trigger: 'blur' }]
       },
 
       // 表格
@@ -140,7 +117,12 @@ export default {
     onGetTableList() {
       this.listLoading = true
       tableList(this.listQuery).then(res => {
-        this.tableData = res.data.items
+        res.data.data.records.forEach(item => {
+          downloadPhoto({ filePath: item.photo }).then(pho => {
+            item.photo = pho.data
+          })
+        })
+        this.tableData = res.data.data.records
         this.totalCount = res.data.total
         setTimeout(() => {
           this.listLoading = false
@@ -169,10 +151,8 @@ export default {
         this.formData = Object.assign(this.formData, row)
       } else {
         this.formData = {
-          actName: '',
-          stuName: '',
-          actSite: '',
-          state: ''
+          module: '',
+          photo: ''
         }
       }
       /* var indexs = this.formItems.findIndex(item => {
@@ -235,8 +215,9 @@ export default {
           this.isModify = false
         })
       } else {
-        addUser(formData).then(res => {
+        addPhoto(formData).then(res => {
           this.$message.success('添加成功')
+
           this.onGetTableList()
           this.showDialog = false
           this.isModify = false

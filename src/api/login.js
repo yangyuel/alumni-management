@@ -1,14 +1,10 @@
 import request from '@/utils/request'
 import md5 from 'js-md5'
-export function loginByUsername(username, password) {
-  var pass = md5(password)
-  const data = {
-    username,
-    pass
-  }
+
+export function loginByUsername(params) {
   return request({
-    data,
-    url: '/login/user/login',
+    params,
+    url: '/login',
     method: 'post'
   })
 }

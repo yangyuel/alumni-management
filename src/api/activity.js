@@ -6,7 +6,7 @@ import request from '@/utils/request'
 export const tableList = (data) => {
   return request({
     data,
-    url: '/donate/query',
+    url: '/activity/query',
     method: 'get'
   })
 }
@@ -23,11 +23,11 @@ export const addAct = (data) => {
 /**
  * 删除活动
  */
-export const deleteAct = (data) => {
+export const deleteAct = (params) => {
   return request({
-    data,
+    params,
     url: '/activity/deleteAll',
-    method: 'post'
+    method: 'get'
   })
 }
 /**

@@ -89,7 +89,9 @@ export const asyncRouterMap = [
       component: () => import('@/views/pages/platform/index'),
       meta: {
         title: '互动平台',
-        icon: 'iconfont iconfaguichaxun' }
+        icon: 'iconfont iconfaguichaxun',
+        role: ['2']
+      }
     }]
   },
   {
@@ -101,7 +103,9 @@ export const asyncRouterMap = [
       component: () => import('@/views/pages/userBulletin/index'),
       meta: {
         title: '新闻公告',
-        icon: 'iconfont iconfaguichaxun' }
+        icon: 'iconfont iconfaguichaxun',
+        role: ['1']
+      }
     }]
   },
   {
@@ -113,7 +117,9 @@ export const asyncRouterMap = [
       component: () => import('@/views/pages/userManagement/index'),
       meta: {
         title: '校友管理',
-        icon: 'iconfont iconfaguichaxun' }
+        icon: 'iconfont iconfaguichaxun',
+        role: ['1']
+      }
     }]
   },
   {
@@ -125,7 +131,9 @@ export const asyncRouterMap = [
       component: () => import('@/views/pages/activity/index'),
       meta: {
         title: '活动管理',
-        icon: 'iconfont iconyonghu' }
+        icon: 'iconfont iconyonghu',
+        role: ['1']
+      }
     }]
   },
   {
@@ -137,7 +145,9 @@ export const asyncRouterMap = [
       component: () => import('@/views/pages/alumniInfo/index'),
       meta: {
         title: '校友统计',
-        icon: 'iconfont iconjiaose' }
+        icon: 'iconfont iconjiaose',
+        role: ['2']
+      }
     }]
   },
   {
@@ -149,7 +159,9 @@ export const asyncRouterMap = [
       component: () => import('@/views/pages/community/index'),
       meta: {
         title: '校友社区',
-        icon: 'iconfont iconjiaose' }
+        icon: 'iconfont iconjiaose',
+        role: ['2']
+      }
     }]
   },
   {
@@ -161,24 +173,27 @@ export const asyncRouterMap = [
       component: () => import('@/views/pages/album/index'),
       meta: {
         title: '相册',
-        icon: 'iconfont iconGroup-' }
-    }]
-  },
-  {
-    path: '',
-    redirect: 'noredirect',
-    component: Layout,
-    children: [{
-      path: 'alumniActivity',
-      name: '校友活动',
-      component: () => import('@/views/pages/alumniActivity/index'),
-      meta: {
-        title: '校友活动',
-        icon: 'iconfont iconrizhi',
-        noCache: true
+        icon: 'iconfont iconGroup-',
+        role: ['2']
       }
     }]
   },
+  // {
+  //   path: '',
+  //   redirect: 'noredirect',
+  //   component: Layout,
+  //   children: [{
+  //     path: 'alumniActivity',
+  //     name: '校友活动',
+  //     component: () => import('@/views/pages/alumniActivity/index'),
+  //     meta: {
+  //       title: '校友活动',
+  //       icon: 'iconfont iconrizhi',
+  //       noCache: true,
+  //       role: ['1']
+  //     }
+  //   }]
+  // },
   {
     path: '',
     redirect: 'noredirect',
@@ -190,7 +205,8 @@ export const asyncRouterMap = [
       meta: {
         title: '校友捐赠',
         icon: 'iconfont iconfujianguanli',
-        noCache: true
+        noCache: true,
+        role: ['1']
       }
     }]
   },
@@ -205,7 +221,8 @@ export const asyncRouterMap = [
       meta: {
         title: '捐赠信息',
         icon: 'iconfont iconzidian',
-        noCache: true
+        noCache: true,
+        role: ['2']
       }
     }]
   },
@@ -220,7 +237,8 @@ export const asyncRouterMap = [
       meta: {
         title: '校友相册',
         icon: 'iconfont iconcanshupeizhi',
-        noCache: true
+        noCache: true,
+        role: ['2']
       }
     }
     ]

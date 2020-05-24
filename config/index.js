@@ -11,12 +11,16 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
        '/api':{
-        target:"http://192.168.101.118:8888",     //后台地址
-        changeOrigin:true,                              //跨域代理
-        pathRewrite: {
-           '^/api':""                                         //路径重写
+          target:"http://localhost:8888",     //后台地址
+          changeOrigin:true,                              //跨域代理
+          pathRewrite: {
+            '^/api':""                                         //路径重写
+          }
+        },
+        '/common':{
+          target:"http://localhost:8888",     //后台地址
+          changeOrigin:true                             //跨域代理
         }
-      }
     },
     // Various Dev Server settings
     // can be overwritten by process.env.HOST

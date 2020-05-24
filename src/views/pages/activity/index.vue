@@ -9,8 +9,8 @@
       label-width="120px"
       label-position="right"
       )
-      el-form-item(label="标题:" prop="actname")
-        el-input.filter-item( placeholder="请输入标题" v-model="filterForm.actname" style="width: 200px; margin-right: 20px")
+      el-form-item(label="标题:" prop="actName")
+        el-input.filter-item( placeholder="请输入标题" v-model="filterForm.actName" style="width: 200px; margin-right: 20px")
       el-form-item
           el-button.filter-item(
             type="primary"
@@ -24,11 +24,11 @@
         icon="el-icon-circle-plus-outline"
         @click="add") 添加活动
       el-button(
-        type="primary"
+        type="danger"
         icon="el-icon-delete"
         style="margin-left: 10px;"
         @click="onDelete"
-        :disabled="deleteDisable") 批量更新
+        :disabled="deleteDisable") 批量删除
     .table-warp
       simple-table(
         :listLoading="tableLoading"
@@ -74,7 +74,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        actname: undefined
+        actName: undefined
       },
       columns: [
         {
@@ -82,12 +82,6 @@ export default {
           label: '标题',
           align: 'center',
           width: 200
-        },
-        {
-          prop: 'stuname',
-          label: '发起人',
-          align: 'center',
-          width: 100
         },
         {
           prop: 'actdate',
@@ -98,12 +92,6 @@ export default {
           prop: 'actsite',
           label: '活动地点',
           align: 'center'
-        },
-        {
-          prop: 'state',
-          label: '状态',
-          align: 'center',
-          status: true
         },
         {
           prop: 'actimage',
@@ -120,30 +108,25 @@ export default {
 
       // 表单
       filterForm: {
-        actname: ''
+        actName: ''
       },
 
       // 弹窗
       showDialog: false,
       formData: {
         actname: '',
-        stuname: '',
         actdate: '',
         actsite: '',
-        actimage: '',
-        state: '1'
+        actimage: ''
       },
       formItems: [
         { label: '标题', prop: 'actname', input: true },
-        { label: '发起人', prop: 'stuname', input: true },
         { label: '时间', prop: 'actdate', time: true },
         { label: '地点', prop: 'actsite', input: true },
-        { label: '状态', prop: 'state', radio: true, options: [{ label: '已通过', value: '1' }, { value: '0', label: '未通过' }] },
         { label: '图片', prop: 'actimage', upload: true, action: 'action="https://jsonplaceholder.typicode.com/posts/' }
       ],
       diaLogformRules: {
         actname: [{ required: true, message: '请输入标题', trigger: 'blur' }],
-        stuname: [{ required: true, message: '请输入发起人姓名', trigger: 'blur' }],
         actdate: [{ required: true, message: '请输入时间', trigger: 'blur' }],
         actsite: [{ required: true, message: '请输入地点', trigger: 'blur' }],
         actimage: [{ required: false, message: '请上传图片', trigger: 'change' }]
@@ -165,7 +148,7 @@ export default {
     onGetTableList() {
       this.listLoading = true
       tableList(this.listQuery).then(res => {
-        this.tableData = res.data.data.records
+        this.tableData = res.data.data.tableData
         this.totalCount = res.data.total
       })
     },
@@ -197,11 +180,9 @@ export default {
       } else {
         this.formData = {
           actname: '',
-          stuname: '',
           actdate: '',
           actsite: '',
-          actimage: '',
-          state: ''
+          actimage: ''
         }
       }
       /* var indexs = this.formItems.findIndex(item => {
@@ -231,15 +212,13 @@ export default {
       }).then(() => {
         let id = []
         row ? id.push(row.id) : id = this.selectIds
-        deleteAct({ ids: id }).then((res) => {
-          debugger
-          if (res.data.code === 0) {
-            this.onGetTableList()
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-          }
+        const idData = id.join(',')
+        deleteAct({ ids: idData }).then((res) => {
+          this.onGetTableList()
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
         })
       }).catch(() => {
         this.$message({

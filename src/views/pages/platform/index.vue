@@ -4,13 +4,8 @@ el-row(:gutter="100" style="padding: 100px")
     h2.title 最新动态
     div.myInfo(:data="myInfo")
       el-row
-        img.myimg(:src = "myInfo.myimg")
-        span(style="vertical-align:middle") {{ myInfo.name }}
-      el-row
-        h3.title {{myInfo.title}}
-        p {{myInfo.content}}
-      el-row
-        img.imgList(v-for="i in myInfo.imgList")
+        img.myimg(:src = "myInfo.avatar")
+        span(style="vertical-align:middle") {{ myInfo.stuName }}
   el-col.right(:span="8")
     el-row
       h3.actTitle 推荐活动
@@ -24,8 +19,8 @@ el-row(:gutter="100" style="padding: 100px")
       h3.actTitle 新闻公告
       ul.news(:data="news")
         li(v-for="(item, i) in news" :key="i")
-          div {{ item.newTitle }}
-          div {{ item.date }}
+          div {{ item.name }}
+          div {{ item.ctime }}
 </template>
 
 <script>
@@ -62,7 +57,7 @@ export default {
       activities: [],
       news: [
         {
-          newTitle: '20周年校庆大典',
+          name: '20周年校庆大典',
           date: '2020/04/25'
         },
         {
@@ -83,13 +78,14 @@ export default {
   },
   methods: {
     community() {
-      getCommunity().then(res=> {
-
+      getCommunity().then(res => {
+        this.myInfo = res.data.data
+        console.log(this.myInfo)
       })
     },
     newsTable() {
       getNews().then(res => {
-        this.news = res.data
+        this.news = res.data.data
       })
     },
     activity() {

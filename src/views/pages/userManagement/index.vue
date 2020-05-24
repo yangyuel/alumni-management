@@ -103,12 +103,12 @@ export default {
           width: 200
         },
         {
-          prop: 'stuSex',
+          prop: 'stu_sex',
           label: '性别',
           align: 'center'
         },
         {
-          prop: 'stuNum',
+          prop: 'stu_num',
           label: '学号',
           align: 'center'
         },
@@ -210,7 +210,7 @@ export default {
     onGetTableList() {
       // this.tableLoading = true
       tableList(this.listQuery).then(res => {
-        this.tableData = res.data.items
+        this.tableData = res.data.data.records
         this.totalCount = res.data.total
         setTimeout(() => {
           this.tableLoading = false
@@ -249,8 +249,8 @@ export default {
       } else {
         this.formData = {
           stuName: '',
-          stuSex: '',
-          stuNum: '',
+          stu_sex: '',
+          stu_num: '',
           phone: '',
           mailbox: ''
         }
@@ -270,7 +270,8 @@ export default {
         .then(() => {
           let id = []
           row ? id.push(row.id) : (id = this.selectIds)
-          deleteUser({ ids: JSON.stringify(id) }).then(res => {
+          const idData = id.join(',')
+          deleteUser({ ids: idData }).then(res => {
             // console.log(res)
             this.onGetTableList()
             this.$message({

@@ -36,7 +36,7 @@
 </template>
 
 <script>
-// import { tableList, modifyUser, addUser } from '@/api/user'
+import { tableList, deleteDonate, modifyDonate, addDonate } from '@/api/donate'
 import ModifyDialog from '@/components/SimpleDialog'
 import SimpleTable from '@/components/Table/SimpleTable'
 export default {
@@ -59,21 +59,20 @@ export default {
       },
       columns: [
         {
-          prop: 'stuName',
+          prop: 'stuname',
           label: '捐赠人姓名',
           align: 'center',
           width: 100
         },
         {
-          prop: 'actDate',
+          prop: 'actdate',
           label: '捐赠项目',
           align: 'center'
         },
         {
           prop: 'state',
           label: '捐赠金额',
-          align: 'center',
-          status: true
+          align: 'center'
         },
         {
           prop: 'actImage',
@@ -81,13 +80,8 @@ export default {
           align: 'center'
         },
         {
-          prop: 'aceetImage',
-          label: '入学年份',
-          align: 'center'
-        },
-        {
-          prop: '33',
-          label: '是否公开',
+          prop: 'www',
+          label: '捐赠人院系/单位',
           align: 'center'
         }
       ],
@@ -102,26 +96,25 @@ export default {
       // 弹窗
       showDialog: false,
       formData: {
-        actName: '',
-        stuName: '',
-        actDate: '',
-        actSite: '',
+        stuname: '',
+        actdate: '',
+        state: '',
         actImage: '',
-        state: '1'
+        www: ''
       },
       formItems: [
-        { label: '捐赠人', prop: 'actName', input: true },
-        { label: '项目', prop: 'stuName', input: true },
-        { label: '金额', prop: 'actDate', input: true },
-        { label: '联系方式', prop: 'actSite', input: true },
-        { label: '单位', prop: 'work', input: true }
+        { label: '捐赠人', prop: 'stuname', input: true },
+        { label: '项目', prop: 'actdate', input: true },
+        { label: '金额', prop: 'state', input: true },
+        { label: '联系方式', prop: 'actImage', input: true },
+        { label: '单位', prop: 'www', input: true }
       ],
       diaLogformRules: {
-        actName: [{ required: true, message: '请输入捐赠人', trigger: 'blur' }],
-        stuName: [{ required: true, message: '请输入捐赠项目', trigger: 'blur' }],
-        actDate: [{ required: true, message: '请输入金额', trigger: 'blur' }],
-        actSite: [{ required: true, message: '请输入联系方式', trigger: 'blur' }],
-        work: [{ required: true, message: '请输入单位', trigger: 'blur' }]
+        stuname: [{ required: true, message: '请输入捐赠人', trigger: 'blur' }],
+        actdate: [{ required: true, message: '请输入捐赠项目', trigger: 'blur' }],
+        state: [{ required: true, message: '请输入金额', trigger: 'blur' }],
+        actImage: [{ required: true, message: '请输入联系方式', trigger: 'blur' }],
+        www: [{ required: true, message: '请输入单位', trigger: 'blur' }]
       },
 
       // 表格
@@ -142,7 +135,7 @@ export default {
     onGetTableList() {
       this.listLoading = true
       tableList(this.listQuery).then(res => {
-        this.tableData = res.data.items
+        this.tableData = res.data.data.records
         this.totalCount = res.data.total
         setTimeout(() => {
           this.listLoading = false
@@ -157,21 +150,12 @@ export default {
      * @param {Object} [formData] 表单数据
      */
     onConfirm(formData) {
-      if (this.isModify) {
-        modifyUser(formData).then(res => {
-          this.$message.success('修改成功')
-          this.onGetTableList()
-          this.showDialog = false
-          this.isModify = false
-        })
-      } else {
-        addUser(formData).then(res => {
-          this.$message.success('添加成功')
-          this.onGetTableList()
-          this.showDialog = false
-          this.isModify = false
-        })
-      }
+      addDonate(formData).then(res => {
+        this.$message.success('添加成功')
+        this.onGetTableList()
+        this.showDialog = false
+        this.isModify = false
+      })
     }
   }
 }
